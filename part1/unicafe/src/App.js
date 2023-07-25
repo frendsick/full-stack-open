@@ -23,18 +23,18 @@ function positiveFeedbackPercentage(feedbacks) {
 }
 
 const Header = ({text}) => <h1>{text}</h1>
-const Feedback = ({feedback}) => <p>{feedback.name} {feedback.count}</p>
+const StatisticLine = ({text, value}) => <p>{text} {value}</p>
 const Statistics = ({feedbacks}) => {
   const feedbackCount = feedbackTotal(feedbacks)
   if (feedbackCount === 0) return <p>No feedback given</p>
   return(
     <div>
       {
-        feedbacks.map((feedback, index) => <Feedback key={index} feedback={feedback} />)
+        feedbacks.map((feedback, index) => <StatisticLine key={index} text={feedback.name} value={feedback.count} />)
       }
-      <p>all {feedbackCount}</p>
-      <p>average {feedbackAverage(feedbacks)}</p>
-      <p>positive {positiveFeedbackPercentage(feedbacks)} %</p>
+      <StatisticLine text="all" value={feedbackCount} />
+      <StatisticLine text="average" value={feedbackAverage(feedbacks)} />
+      <StatisticLine text="positive" value={positiveFeedbackPercentage(feedbacks)} />
     </div>
   )
 }
