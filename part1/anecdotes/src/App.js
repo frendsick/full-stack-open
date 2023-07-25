@@ -4,8 +4,13 @@ function getRandomIndex(list) {
   return Math.floor(Math.random()*list.length)
 }
 
-const Button = ({ text, onClick }) => <button onClick={onClick}>{text}</button>;
+function getMaxIndex(list) {
+  const maxNumber = Math.max(...list)
+  return list.indexOf(maxNumber)
+}
 
+const Header = ({text}) => <h1>{text}</h1>
+const Button = ({ text, onClick }) => <button onClick={onClick}>{text}</button>;
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -19,20 +24,30 @@ const App = () => {
   ]
    
   const [selected, setSelected] = useState(0)
+  const [mostVoted, setMostVoted] = useState(0)
   const [votes, setVotes] = useState(Array(anecdotes.length).fill(0))
   const incrementVote = (index) => {
     const updatedVotes = [...votes];
     updatedVotes[index] += 1;
     setVotes(updatedVotes);
+    setMostVoted(getMaxIndex(updatedVotes))
   };
 
   return (
-    <div>
+    <>
+    <article>
+      <Header text="Anecdote of the day" />
       <p>{anecdotes[selected]}</p>
       <p>has {votes[selected]} votes</p>
       <Button text="vote" onClick={() => incrementVote(selected)} />
       <Button text="next anecdote" onClick={() => setSelected(getRandomIndex(anecdotes))} />
-    </div>
+    </article>
+    <article>
+      <Header text="Anecdote with most votes" />
+      <p>{anecdotes[mostVoted]}</p>
+      <p>has {votes[mostVoted]} votes</p>
+    </article>
+    </>
   )
 }
 
