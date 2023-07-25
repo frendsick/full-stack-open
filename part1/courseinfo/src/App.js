@@ -26,10 +26,10 @@ const App = () => {
   const exerciseCounts = course.parts.map(part => part.exercises);
 
   return (
-    <div>
+    <section>
       <Course name={course.name} parts={course.parts} />
       <Total countList={exerciseCounts} />
-    </div>
+    </section>
   )
 }
 
