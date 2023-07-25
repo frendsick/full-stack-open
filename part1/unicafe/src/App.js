@@ -23,6 +23,7 @@ function positiveFeedbackPercentage(feedbacks) {
 }
 
 const Header = ({text}) => <h1>{text}</h1>
+const Button = ({ text, onClick }) => <button onClick={onClick}>{text}</button>;
 const StatisticLine = ({text, value}) => {
   return (
     <tr>
@@ -62,9 +63,9 @@ const App = () => {
   return (
     <div>
       <Header text="give feedback" />
-      <button onClick={() => setGood(good + 1)}>good</button>
-      <button onClick={() => setNeutral(neutral + 1)}>neutral</button>
-      <button onClick={() => setBad(bad + 1)}>bad</button>
+      <Button text="good" onClick={() => setGood(good + 1)} />
+      <Button text="neutral" onClick={() => setNeutral(neutral + 1)} />
+      <Button text="bad" onClick={() => setBad(bad + 1)} />
       <Header text="statistics" />
       <Statistics feedbacks={feedbacks} />
     </div>
