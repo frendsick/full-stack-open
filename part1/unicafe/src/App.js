@@ -24,7 +24,7 @@ function positiveFeedbackPercentage(feedbacks) {
 
 const Header = ({text}) => <h1>{text}</h1>
 const Feedback = ({feedback}) => <p>{feedback.name} {feedback.count}</p>
-const FeedbackDisplay = ({feedbacks}) => {
+const Statistics = ({feedbacks}) => {
   return(
     <div>
       {
@@ -55,7 +55,7 @@ const App = () => {
       <button onClick={() => setNeutral(neutral + 1)}>neutral</button>
       <button onClick={() => setBad(bad + 1)}>bad</button>
       <Header text="statistics" />
-      <FeedbackDisplay feedbacks={feedbacks} />
+      <Statistics feedbacks={feedbacks} />
     </div>
   )
 }
