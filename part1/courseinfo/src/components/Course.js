@@ -6,7 +6,7 @@ const Course = ({name, parts}) => {
   const exerciseCounts = parts.map(part => part.exercises)
   return (
     <section>
-      <Header headingLevel="h2" text={name} />
+      <Header text={name} headingLevel="h2" />
       <Content parts={parts} />
       <Total countList={exerciseCounts} />
     </section>

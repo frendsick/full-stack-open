@@ -50,7 +50,7 @@ const App = () => {
   // Display course information and the number of exercises for each course
   return (
     <article>
-      <Header headingLevel="h1" text="Web development curriculum" />
+      <Header text="Web development curriculum" headingLevel="h1" />
       {
         courses.map((course) => {
           return (
