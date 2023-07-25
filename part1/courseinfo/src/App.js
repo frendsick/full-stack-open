@@ -1,5 +1,6 @@
 const Header = (props) => <h1>{props.course}</h1>
-const Content = (props) => <p>{props.part} {props.exerciseCount}</p>
+const Part = (props) => <p>{props.name} {props.count}</p>
+const Content = (props) => <Part name={props.part} count={props.count} />
 const Total = (props) => <p>Number of exercises {props.countList.reduce((a, b) => a + b, 0)}</p>
 
 const App = () => {
@@ -14,9 +15,9 @@ const App = () => {
   return (
     <div>
       <Header course={course} />
-      <Content part={part1} exerciseCount={exercises1} />
-      <Content part={part2} exerciseCount={exercises2} />
-      <Content part={part3} exerciseCount={exercises3} />
+      <Content part={part1} count={exercises1} />
+      <Content part={part2} count={exercises2} />
+      <Content part={part3} count={exercises3} />
       <Total countList={[exercises1, exercises2, exercises3]}/>
     </div>
   )
