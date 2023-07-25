@@ -1,34 +1,63 @@
-import { useState } from 'react';
+import { useState } from 'react'
 
-const Header = ({ text }) => <h1>{text}</h1>;
-const Feedback = ({ feedback }) => <p>{feedback.name} {feedback.count}</p>
-const FeedbackDisplay = ({ feedbacks }) => feedbacks.map((feedback, index) => <Feedback key={index} feedback={feedback} />)
+function feedbackTotal(feedbacks) {
+  return feedbacks.reduce((sum, feedback) => sum + feedback.count, 0)
+}
+
+function feedbackAverage(feedbacks) {
+  const total = feedbackTotal(feedbacks)
+  if (total === 0) return 0
+  const positiveCount = feedbacks.reduce((acc, feedback) => {
+    if (feedback.name === "good") return acc + feedback.count;
+    if (feedback.name === "bad") return acc - feedback.count;
+    return acc
+  }, 0)
+  return positiveCount / total
+}
+
+function positiveFeedbackPercentage(feedbacks) {
+  const total = feedbackTotal(feedbacks)
+  if (total === 0) return 0
+  const goodFeedbackCount = feedbacks.find((feedback) => feedback.name === "good").count;
+  return goodFeedbackCount / total * 100
+}
+
+const Header = ({text}) => <h1>{text}</h1>
+const Feedback = ({feedback}) => <p>{feedback.name} {feedback.count}</p>
+const FeedbackDisplay = ({feedbacks}) => {
+  return(
+    <div>
+      {
+        feedbacks.map((feedback, index) => <Feedback key={index} feedback={feedback} />)
+      }
+      <p>all {feedbackTotal(feedbacks)}</p>
+      <p>average {feedbackAverage(feedbacks)}</p>
+      <p>positive {positiveFeedbackPercentage(feedbacks)} %</p>
+    </div>
+  )
+}
 
 const App = () => {
-  const [feedbacks, setFeedbacks] = useState({
-    good: 0,
-    neutral: 0,
-    bad: 0,
-  });
-
-  const incrementFeedback = (type) => {
-    if (!(type in feedbacks)) return; // Guard clause for unknown feedback types
-    setFeedbacks((feedbacks) => ({
-      ...feedbacks,
-      [type]: feedbacks[type] + 1,
-    }));
-  };
+  // save clicks of each button to its own state
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
+  const feedbacks = [
+    {name: "good", count: good},
+    {name: "neutral", count: neutral},
+    {name: "bad", count: bad},
+  ]
 
   return (
     <div>
       <Header text="give feedback" />
-      <button onClick={() => incrementFeedback('good')}>good</button>
-      <button onClick={() => incrementFeedback('neutral')}>neutral</button>
-      <button onClick={() => incrementFeedback('bad')}>bad</button>
+      <button onClick={() => setGood(good + 1)}>good</button>
+      <button onClick={() => setNeutral(neutral + 1)}>neutral</button>
+      <button onClick={() => setBad(bad + 1)}>bad</button>
       <Header text="statistics" />
-      <FeedbackDisplay feedbacks={Object.entries(feedbacks).map(([name, count]) => ({ name, count }))} />
+      <FeedbackDisplay feedbacks={feedbacks} />
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App
