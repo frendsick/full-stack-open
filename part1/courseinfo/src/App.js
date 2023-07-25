@@ -1,7 +1,7 @@
-const Header = (props) => <h1>{props.course}</h1>
-const Part = (props) => <p>{props.name} {props.count}</p>
+const Header = ({text}) => <h1>{text}</h1>
+const Part = ({name, count}) => <p>{name} {count}</p>
 const Content = ({parts}) => parts.map((part, index) => <Part key={index} name={part.name} count={part.exercises} />)
-const Total = (props) => <p>Number of exercises {props.countList.reduce((a, b) => a + b, 0)}</p>
+const Total = ({countList}) => <p>Number of exercises {countList.reduce((a, b) => a + b, 0)}</p>
 
 const App = () => {
   const course = 'Half Stack application development'
@@ -23,7 +23,7 @@ const App = () => {
 
   return (
     <div>
-      <Header course={course} />
+      <Header text={course} />
       <Content parts={parts} />
       <Total countList={exerciseCounts}/>
     </div>
