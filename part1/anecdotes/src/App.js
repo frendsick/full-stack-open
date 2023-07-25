@@ -4,6 +4,8 @@ function getRandomIndex(list) {
   return Math.floor(Math.random()*list.length)
 }
 
+const Button = ({ text, onClick }) => <button onClick={onClick}>{text}</button>;
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -21,7 +23,7 @@ const App = () => {
   return (
     <div>
       <p>{anecdotes[selected]}</p>
-      <button onClick={() => setSelected(getRandomIndex(anecdotes))}>next anecdote</button>
+      <Button text="next anecdote" onClick={() => setSelected(getRandomIndex(anecdotes))} />
     </div>
   )
 }
