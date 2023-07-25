@@ -1,3 +1,8 @@
-const Header = ({text}) => <h1>{text}</h1>
+const Header = ({headingLevel, text}) => {
+    const Heading = headingLevel
+    return (
+        <Heading>{text}</Heading>
+    )
+}
 
 export default Header
