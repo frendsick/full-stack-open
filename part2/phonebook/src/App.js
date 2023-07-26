@@ -18,8 +18,17 @@ const App = () => {
   const handleNameChange = (event) => setNewName(event.target.value)
   const handleNumberChange = (event) => setNewNumber(event.target.value)
 
+  // Phonebook should not contain two person with the same name (case insensitive)
+  function nameExists(name) {
+    return persons.some(person => person.name.toLowerCase() === name.toLowerCase());
+  }
+
   const addPerson = (event) => {
     event.preventDefault(); // Do not submit the form
+    if (nameExists(newName)) {
+      alert(`${newName} is already added to phonebook`)
+      return
+    }
     const newPerson = {
       name: newName,
       number: newNumber,
