@@ -24,7 +24,7 @@ const App = () => {
       alert(`${person.name} is already added to phonebook`)
       return
     }
-    setPersons([...persons, person]);
+    setPersons((prevPersons) => [...prevPersons, person])
   };
 
   return (
