@@ -11,12 +11,15 @@ const PersonForm = ({addPersonFunction}) => {
     const handleNumberChange = (event) => setNumber(event.target.value)
     const handleSubmit = (event) => {
         event.preventDefault();
-        const newPerson = {
+        const person = {
             name: name,
             number: number,
             id: uuidv4(),
         };
-        addPersonFunction(newPerson);
+        const personAdded = addPersonFunction(person);
+
+        // Clear the input fields if person was added
+        if (!personAdded) return
         setName('');
         setNumber('');
     };

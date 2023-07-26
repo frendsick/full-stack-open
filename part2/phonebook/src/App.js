@@ -13,12 +13,14 @@ const App = () => {
     return persons.some(person => person.name.toLowerCase() === name.toLowerCase());
   }
 
+  // Return a boolean depending on if the person was added or not
   function addPerson(person) {
     if (nameExists(person.name)) {
       alert(`${person.name} is already added to phonebook`)
-      return
+      return false
     }
     setPersons((prevPersons) => [...prevPersons, person])
+    return true
   };
 
   return (
