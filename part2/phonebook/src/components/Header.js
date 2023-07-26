@@ -6,9 +6,7 @@ const Header = ({text, headingLevel}) => {
         return
     }
     const Heading = headingLevel
-    return (
-        <Heading>{text}</Heading>
-    )
+    return <Heading>{text}</Heading>
 }
 
 export default Header
