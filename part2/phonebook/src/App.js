@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Filter from './components/Filter';
 import Header from './components/Header';
-import Person from './components/Person';
+import Persons from './components/Persons';
 import PersonForm from './components/PersonForm';
 
 const App = () => {
@@ -34,13 +34,7 @@ const App = () => {
       <Header text="add a new" headingLevel="h2"></Header>
       <PersonForm addPersonFunction={addPerson} />
       <Header text="Numbers" headingLevel="h2"></Header>
-      {
-        persons
-          .filter(person => person.name.toLowerCase().includes(nameFilter.toLowerCase()))
-          .map((person) =>
-            <Person key={person.id} name={person.name} number={person.number} />
-          )
-      }
+      <Persons personList={persons} nameFilter={nameFilter} />
     </article>
   )
 }
