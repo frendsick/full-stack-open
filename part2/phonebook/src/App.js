@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { v4 as uuidv4 } from 'uuid';
 import Person from './components/Person'
 
 const App = () => {
@@ -22,7 +23,7 @@ const App = () => {
     const newPerson = {
       name: newName,
       number: newNumber,
-      id: persons.length + 1, // TODO: Create better way of generating ID
+      id: uuidv4(),
     };
     setPersons([...persons, newPerson]);
 
