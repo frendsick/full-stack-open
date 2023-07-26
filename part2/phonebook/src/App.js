@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { v4 as uuidv4 } from 'uuid';
-import Person from './components/Person'
+import Header from './components/Header';
+import Person from './components/Person';
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -44,14 +45,14 @@ const App = () => {
   };
 
   return (
-    <div>
-      <h2>Phonebook</h2>
+    <article>
+      <Header text="Phonebook" headingLevel="h1"></Header>
       <form>
         <div>
           filter shown with <input value={nameFilter} onChange={handleFilterChange} />
         </div>
       </form>
-      <h2>add a new</h2>
+      <Header text="add a new" headingLevel="h2"></Header>
       <form onSubmit={addPerson}>
         <div>
           name: <input value={newName} onChange={handleNameChange} />
@@ -63,7 +64,7 @@ const App = () => {
           <button type="submit">add</button>
         </div>
       </form>
-      <h2>Numbers</h2>
+      <Header text="Numbers" headingLevel="h2"></Header>
       {
         persons
           .filter(person => person.name.toLowerCase().includes(nameFilter.toLowerCase()))
@@ -71,7 +72,7 @@ const App = () => {
             <Person key={person.id} name={person.name} number={person.number} />
           )
       }
-    </div>
+    </article>
   )
 }
 
