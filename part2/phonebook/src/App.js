@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Filter from './components/Filter';
 import Header from './components/Header';
 import Person from './components/Person';
 import PersonForm from './components/PersonForm';
@@ -12,7 +13,6 @@ const App = () => {
   ])
 
   const [nameFilter, setNameFilter] = useState('');
-  const handleFilterChange = (event) => setNameFilter(event.target.value)
 
   // Phonebook should not contain two person with the same name (case insensitive)
   function nameExists(name) {
@@ -30,11 +30,7 @@ const App = () => {
   return (
     <article>
       <Header text="Phonebook" headingLevel="h1"></Header>
-      <form>
-        <div>
-          filter shown with <input value={nameFilter} onChange={handleFilterChange} />
-        </div>
-      </form>
+      <Filter filterState={nameFilter} setFilterState={setNameFilter} />
       <Header text="add a new" headingLevel="h2"></Header>
       <PersonForm addPersonFunction={addPerson} />
       <Header text="Numbers" headingLevel="h2"></Header>
