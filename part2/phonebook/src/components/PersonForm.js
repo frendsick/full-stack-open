@@ -6,7 +6,7 @@ const PersonForm = ({addPersonFunction}) => {
     const [name, setName] = useState('');
     const [number, setNumber] = useState('');
 
-    // Input field onChange functions
+    // Form handlers
     const handleNameChange = (event) => setName(event.target.value)
     const handleNumberChange = (event) => setNumber(event.target.value)
     const handleSubmit = (event) => {
@@ -20,6 +20,7 @@ const PersonForm = ({addPersonFunction}) => {
         setName('');
         setNumber('');
     };
+
     return (
         <form onSubmit={handleSubmit}>
             <div>
