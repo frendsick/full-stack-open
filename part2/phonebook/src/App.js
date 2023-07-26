@@ -13,10 +13,12 @@ const App = () => {
   // Input field states
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
+  const [nameFilter, setNameFilter] = useState('');
 
   // Input field onChange functions
   const handleNameChange = (event) => setNewName(event.target.value)
   const handleNumberChange = (event) => setNewNumber(event.target.value)
+  const handleFilterChange = (event) => setNameFilter(event.target.value)
 
   // Phonebook should not contain two person with the same name (case insensitive)
   function nameExists(name) {
@@ -44,6 +46,12 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <form>
+        <div>
+          filter shown with <input value={nameFilter} onChange={handleFilterChange} />
+        </div>
+      </form>
+      <h2>add a new</h2>
       <form onSubmit={addPerson}>
         <div>
           name: <input value={newName} onChange={handleNameChange} />
@@ -57,11 +65,11 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       {
-        persons.map((person) => {
-          return (
+        persons
+          .filter(person => person.name.toLowerCase().includes(nameFilter.toLowerCase()))
+          .map((person) =>
             <Person key={person.id} name={person.name} number={person.number} />
           )
-        })
       }
     </div>
   )
