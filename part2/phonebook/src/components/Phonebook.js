@@ -1,12 +1,26 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Filter from './Filter';
 import Header from './Header';
 import Persons from './Persons';
 import PersonForm from './PersonForm';
+import personApi from '../api/person'
 
-const Phonebook = ({ persons: initialPersons }) => {
-  const [persons, setPersons] = useState([...initialPersons])
+const Phonebook = () => {
+  const [persons, setPersons] = useState([]);
   const [nameFilter, setNameFilter] = useState('');
+
+  // Fetch the person data when the component mounts
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const newPersons = await personApi.getAll()
+        setPersons(newPersons);
+      } catch (error) {
+        console.error('Error fetching persons:', error);
+      }
+    };
+    fetchData();
+  }, []); // The empty dependency array makes this effect run only once when the component mounts
 
   // Phonebook should not contain two person with the same name (case insensitive)
   function nameExists(name) {
@@ -19,6 +33,7 @@ const Phonebook = ({ persons: initialPersons }) => {
       alert(`${person.name} is already added to phonebook`)
       return false
     }
+    personApi.create(person)
     setPersons((prevPersons) => [...prevPersons, person])
     return true
   };
