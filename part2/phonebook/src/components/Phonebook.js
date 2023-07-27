@@ -5,7 +5,7 @@ import Persons from './Persons';
 import PersonForm from './PersonForm';
 
 const Phonebook = ({persons: initialPersons}) => {
-  const [persons, setPersons] = useState(initialPersons)
+  const [persons, setPersons] = useState([...initialPersons])
   const [nameFilter, setNameFilter] = useState('');
 
   // Phonebook should not contain two person with the same name (case insensitive)
