@@ -1,38 +1,34 @@
-import { useState } from 'react'
-import Filter from './components/Filter';
-import Header from './components/Header';
-import Persons from './components/Persons';
-import PersonForm from './components/PersonForm';
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import Phonebook from './components/Phonebook';
 
-const App = ({persons: initialPersons}) => {
-  const [persons, setPersons] = useState(initialPersons)
-  const [nameFilter, setNameFilter] = useState('');
+const PERSON_DB_URL = 'http://localhost:3001/persons';
 
-  // Phonebook should not contain two person with the same name (case insensitive)
-  function nameExists(name) {
-    return persons.some(person => person.name.toLowerCase() === name.toLowerCase());
+const App = () => {
+  // Persons for the Phonebook
+  const [persons, setPersons] = useState([]);
+
+  async function getResponseData(url) {
+    return axios
+      .get(url)
+      .then(response => response.data);
   }
 
-  // Return a boolean depending on if the person was added or not
-  function addPerson(person) {
-    if (nameExists(person.name)) {
-      alert(`${person.name} is already added to phonebook`)
-      return false
-    }
-    setPersons((prevPersons) => [...prevPersons, person])
-    return true
-  };
+  // Fetch the person data when the component mounts
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const persons = await getResponseData(PERSON_DB_URL);
+        setPersons(persons);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
 
-  return (
-    <article>
-      <Header text="Phonebook" headingLevel="h1"></Header>
-      <Filter filterState={nameFilter} setFilterState={setNameFilter} />
-      <Header text="add a new" headingLevel="h2"></Header>
-      <PersonForm addPersonFunction={addPerson} />
-      <Header text="Numbers" headingLevel="h2"></Header>
-      <Persons personList={persons} nameFilter={nameFilter} />
-    </article>
-  )
+    fetchData();
+  }, []); // The empty dependency array makes this effect run only once when the component mounts
+
+  return <Phonebook persons={persons} />;
 }
 
 export default App
