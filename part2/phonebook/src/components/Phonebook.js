@@ -9,16 +9,18 @@ const Phonebook = () => {
     const [persons, setPersons] = useState([]);
     const [nameFilter, setNameFilter] = useState("");
 
+    const fetchData = async () => {
+        try {
+            const newPersons = await personApi.getAll();
+            setPersons([...newPersons]);
+            console.log(persons);
+        } catch (error) {
+            console.error("Error fetching persons:", error);
+        }
+    };
+
     // Fetch the person data when the component mounts
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const newPersons = await personApi.getAll();
-                setPersons(newPersons);
-            } catch (error) {
-                console.error("Error fetching persons:", error);
-            }
-        };
         fetchData();
     }, []); // The empty dependency array makes this effect run only once when the component mounts
 
@@ -38,6 +40,15 @@ const Phonebook = () => {
         return true;
     }
 
+    async function deletePerson(person) {
+        try {
+            await personApi.remove(person.id);
+            fetchData();
+        } catch (error) {
+            console.error(`Error deleting person with ID ${person.id}`, error);
+        }
+    }
+
     return (
         <article>
             <Header text="Phonebook" headingLevel="h1"></Header>
@@ -45,7 +56,11 @@ const Phonebook = () => {
             <Header text="add a new" headingLevel="h2"></Header>
             <PersonForm addPersonFunction={addPerson} />
             <Header text="Numbers" headingLevel="h2"></Header>
-            <Persons personList={persons} nameFilter={nameFilter} />
+            <Persons
+                personList={persons}
+                nameFilter={nameFilter}
+                deletePersonFunction={deletePerson}
+            />
         </article>
     );
 };

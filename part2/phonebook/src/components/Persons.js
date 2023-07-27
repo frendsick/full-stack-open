@@ -1,8 +1,10 @@
 import Person from "./Person";
 
-const Persons = ({ personList, nameFilter }) =>
+const Persons = ({ personList, nameFilter, deletePersonFunction }) =>
     personList
         .filter((person) => person.name.toLowerCase().includes(nameFilter.toLowerCase()))
-        .map((person) => <Person key={person.id} person={person} />);
+        .map((person) => (
+            <Person key={person.id} person={person} deletePersonFunction={deletePersonFunction} />
+        ));
 
 export default Persons;
