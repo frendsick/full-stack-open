@@ -58,7 +58,7 @@ const Phonebook = () => {
 
     // Return a boolean depending on if the person was added
     async function addPerson(person) {
-        if (nameExists(person.name)) {
+        if (await nameExists(person.name)) {
             return updatePhoneNumber(person);
         }
         personApi.create(person);
