@@ -44,6 +44,8 @@ const Phonebook = () => {
     }
 
     async function deletePerson(person) {
+        // Delete the person only if the user confirms it
+        if (!window.confirm(`Delete ${person.name}?`)) return;
         try {
             await personApi.remove(person.id);
             fetchData();
