@@ -19,8 +19,8 @@ const PersonForm = ({ addPersonFunction }) => {
         }
 
         const person = {
-            name: name,
-            number: number,
+            name: name.trim(),
+            number: number.trim(),
             id: uuidv4(),
         };
         const personAdded = addPersonFunction(person);
