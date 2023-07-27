@@ -4,7 +4,7 @@ import Header from './Header';
 import Persons from './Persons';
 import PersonForm from './PersonForm';
 
-const Phonebook = ({persons: initialPersons}) => {
+const Phonebook = ({ persons: initialPersons }) => {
   const [persons, setPersons] = useState([...initialPersons])
   const [nameFilter, setNameFilter] = useState('');
 
