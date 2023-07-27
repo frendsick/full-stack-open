@@ -10,6 +10,7 @@ const Phonebook = () => {
     const [persons, setPersons] = useState(null);
     const [nameFilter, setNameFilter] = useState("");
     const [notification, setNotification] = useState(null);
+    const [notificationType, setNotificationType] = useState("success");
 
     const fetchData = async () => {
         try {
@@ -40,7 +41,9 @@ const Phonebook = () => {
         );
     }
 
-    function showNotification(message, delayMs = 3000) {
+    // Show notification for the duration of the delay
+    function showNotification(message, type = "success", delayMs = 3000) {
+        setNotificationType(type);
         setNotification(message);
         setTimeout(() => {
             setNotification(null);
@@ -78,21 +81,25 @@ const Phonebook = () => {
     }
 
     async function deletePerson(person) {
+        const { name, id } = person;
         // Delete the person only if the user confirms it
-        if (!window.confirm(`Delete ${person.name}?`)) return;
-        try {
-            await personApi.remove(person.id);
-            fetchData();
-            showNotification(`Deleted ${person.name}`);
-        } catch (error) {
-            console.error(`Error deleting person with ID ${person.id}`, error);
-        }
+        if (!window.confirm(`Delete ${name}?`)) return;
+        await personApi
+            .remove(id)
+            .then(showNotification(`Deleted ${name}`))
+            .catch(() =>
+                showNotification(
+                    `Information of ${name} has already been removed from server`,
+                    "error",
+                ),
+            );
+        fetchData();
     }
 
     return (
         <article>
             <Header text="Phonebook" headingLevel="h1"></Header>
-            <Notification message={notification} />
+            <Notification message={notification} type={notificationType} />
             <Filter filterState={nameFilter} setFilterState={setNameFilter} />
             <Header text="add a new" headingLevel="h2"></Header>
             <PersonForm addPersonFunction={addPerson} />
