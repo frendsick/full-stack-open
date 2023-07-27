@@ -11,6 +11,13 @@ const PersonForm = ({ addPersonFunction }) => {
     const handleNumberChange = (event) => setNumber(event.target.value);
     const handleSubmit = (event) => {
         event.preventDefault();
+
+        // Do not allow empty values
+        if (!name || !number) {
+            window.alert("Please fill name and number");
+            return;
+        }
+
         const person = {
             name: name,
             number: number,
