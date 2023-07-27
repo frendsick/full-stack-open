@@ -63,9 +63,16 @@ const Phonebook = () => {
         if (!userId) return false;
 
         // Update phone number and redraw
-        await personApi.update(userId, person);
-        fetchData();
-        showNotification(`The number of ${name} was changed to ${number}`);
+        await personApi
+            .update(userId, person)
+            .then(showNotification(`The number of ${name} was changed to ${number}`))
+            .catch(() =>
+                showNotification(
+                    `Information of ${name} has already been removed from server`,
+                    "error",
+                ),
+            );
+        fetchData(); // Update person list
         return true;
     }
 
@@ -93,7 +100,7 @@ const Phonebook = () => {
                     "error",
                 ),
             );
-        fetchData();
+        fetchData(); // Update person list
     }
 
     return (
