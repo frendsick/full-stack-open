@@ -1,5 +1,5 @@
-import Phonebook from './components/Phonebook';
+import Phonebook from "./components/Phonebook";
 
-const App = () => <Phonebook />
+const App = () => <Phonebook />;
 
-export default App
+export default App;

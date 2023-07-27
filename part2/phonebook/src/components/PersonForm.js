@@ -1,14 +1,14 @@
-import { useState } from 'react'
-import { v4 as uuidv4 } from 'uuid';
+import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
-const PersonForm = ({addPersonFunction}) => {
+const PersonForm = ({ addPersonFunction }) => {
     // Input field states
-    const [name, setName] = useState('');
-    const [number, setNumber] = useState('');
+    const [name, setName] = useState("");
+    const [number, setNumber] = useState("");
 
     // Form handlers
-    const handleNameChange = (event) => setName(event.target.value)
-    const handleNumberChange = (event) => setNumber(event.target.value)
+    const handleNameChange = (event) => setName(event.target.value);
+    const handleNumberChange = (event) => setNumber(event.target.value);
     const handleSubmit = (event) => {
         event.preventDefault();
         const person = {
@@ -19,9 +19,9 @@ const PersonForm = ({addPersonFunction}) => {
         const personAdded = addPersonFunction(person);
 
         // Clear the input fields if person was added
-        if (!personAdded) return
-        setName('');
-        setNumber('');
+        if (!personAdded) return;
+        setName("");
+        setNumber("");
     };
 
     return (
@@ -36,7 +36,7 @@ const PersonForm = ({addPersonFunction}) => {
                 <button type="submit">add</button>
             </div>
         </form>
-    )
-}
+    );
+};
 
-export default PersonForm
+export default PersonForm;

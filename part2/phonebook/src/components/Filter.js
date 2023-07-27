@@ -1,5 +1,5 @@
-const Filter = ({filterState, setFilterState}) => {
-    const handleFilterChange = (event) => setFilterState(event.target.value)
+const Filter = ({ filterState, setFilterState }) => {
+    const handleFilterChange = (event) => setFilterState(event.target.value);
 
     return (
         <form>
@@ -7,7 +7,7 @@ const Filter = ({filterState, setFilterState}) => {
                 filter shown with <input value={filterState} onChange={handleFilterChange} />
             </div>
         </form>
-    )
-}
+    );
+};
 
-export default Filter
+export default Filter;
