@@ -4,8 +4,8 @@ import Header from './components/Header';
 import Persons from './components/Persons';
 import PersonForm from './components/PersonForm';
 
-const App = () => {
-  const [persons, setPersons] = useState([])
+const App = ({persons: initialPersons}) => {
+  const [persons, setPersons] = useState(initialPersons)
   const [nameFilter, setNameFilter] = useState('');
 
   // Phonebook should not contain two person with the same name (case insensitive)
