@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import CountryList from "./CountryList";
 import Filter from "./Filter";
 import countryApi from "../api/countries";
 
@@ -24,6 +25,7 @@ const CountryFinder = () => {
     return (
         <article>
             <Filter filterState={countryFilter} setFilterState={setCountryFilter} />
+            <CountryList countries={countries} filter={countryFilter} />
         </article>
     );
 };
