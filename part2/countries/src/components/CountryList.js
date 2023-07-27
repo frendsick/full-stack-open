@@ -1,3 +1,5 @@
+import Country from "./Country";
+
 const CountryList = ({ countries, filter }) => {
     if (countries === null) return;
 
@@ -7,6 +9,7 @@ const CountryList = ({ countries, filter }) => {
     );
     if (filteredCountries.length > 10) return <p>Too many matches, specify another filter</p>;
     if (filteredCountries.length === 0) return <p>The filter does not match any country</p>;
+    if (filteredCountries.length === 1) return <Country country={filteredCountries[0]} />;
     return filteredCountries.map((country) => <p>{country.name.common}</p>);
 };
 
