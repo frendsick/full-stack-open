@@ -12,7 +12,7 @@ const Phonebook = () => {
     const [notification, setNotification] = useState(null);
     const [notificationType, setNotificationType] = useState("success");
 
-    const fetchData = async () => {
+    const fetchPersons = async () => {
         try {
             const newPersons = await personApi.getAll();
             setPersons(newPersons);
@@ -24,7 +24,7 @@ const Phonebook = () => {
 
     // Fetch the person data when the component mounts
     useEffect(() => {
-        fetchData();
+        fetchPersons();
     }, []); // The empty dependency array makes this effect run only once when the component mounts
 
     // string | null
@@ -35,7 +35,7 @@ const Phonebook = () => {
 
     // Phonebook should not contain two person with the same name (case insensitive)
     async function nameExists(name) {
-        await fetchData(); // Make sure that current database information is used
+        await fetchPersons(); // Make sure that current database information is used
         return (
             persons && persons.some((person) => person.name.toLowerCase() === name.toLowerCase())
         );
@@ -72,7 +72,7 @@ const Phonebook = () => {
                     "error",
                 ),
             );
-        fetchData(); // Update person list
+        fetchPersons(); // Update person list
         return true;
     }
 
@@ -100,7 +100,7 @@ const Phonebook = () => {
                     "error",
                 ),
             );
-        fetchData(); // Update person list
+        fetchPersons(); // Update person list
     }
 
     return (
