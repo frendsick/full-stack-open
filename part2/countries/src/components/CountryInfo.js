@@ -1,9 +1,10 @@
+import Flag from "./Flag";
 import InfoLine from "./InfoLine";
 import LanguageList from "./LanguageList";
 
 const CountryInfo = ({ country }) => {
     const capital = country.capital[0];
-    const { area, languages } = country;
+    const { area, flags, languages } = country;
     return (
         <>
             <table>
@@ -13,6 +14,7 @@ const CountryInfo = ({ country }) => {
                 </tbody>
             </table>
             <LanguageList languages={languages} />
+            <Flag flags={flags} />
         </>
     );
 };
