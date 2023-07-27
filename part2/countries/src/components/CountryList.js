@@ -13,7 +13,14 @@ const CountryList = ({ countries, filter }) => {
     const filteredCountries = countries.filter((country) =>
         country.name.common.toLowerCase().includes(filter.toLowerCase()),
     );
-    if (filteredCountries.length > 10) return <p>Too many matches, specify another filter</p>;
+
+    // Clear highlighted country when the country list is not showing
+    const manyCountries = filteredCountries.length > 10;
+    const fewCountries = filteredCountries.length <= 1;
+    if (highlightedCountry && (manyCountries || fewCountries)) setHighlightedCountry(null);
+
+    // Special views
+    if (manyCountries) return <p>Too many matches, specify another filter</p>;
     if (filteredCountries.length === 0) return <p>The filter does not match any country</p>;
     if (filteredCountries.length === 1) return <Country country={filteredCountries[0]} />;
 
