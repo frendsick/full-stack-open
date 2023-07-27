@@ -25,14 +25,15 @@ const Phonebook = () => {
     }, []); // The empty dependency array makes this effect run only once when the component mounts
 
     // Phonebook should not contain two person with the same name (case insensitive)
-    function nameExists(name) {
+    async function nameExists(name) {
+        await fetchData(); // Make sure that current database information is used
         return (
             persons && persons.some((person) => person.name.toLowerCase() === name.toLowerCase())
         );
     }
 
     // Return a boolean depending on if the person was added or not
-    function addPerson(person) {
+    async function addPerson(person) {
         if (nameExists(person.name)) {
             alert(`${person.name} is already added to phonebook`);
             return false;
