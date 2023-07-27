@@ -24,6 +24,12 @@ const Phonebook = () => {
         fetchData();
     }, []); // The empty dependency array makes this effect run only once when the component mounts
 
+    // string | null
+    function getPersonIdByName(name) {
+        const person = persons.find((person) => person.name.toLowerCase() === name.toLowerCase());
+        return person ? person.id : null;
+    }
+
     // Phonebook should not contain two person with the same name (case insensitive)
     async function nameExists(name) {
         await fetchData(); // Make sure that current database information is used
@@ -32,11 +38,28 @@ const Phonebook = () => {
         );
     }
 
-    // Return a boolean depending on if the person was added or not
+    // Return a boolean depending on if the phone number was changed
+    async function updatePhoneNumber(person) {
+        const name = person.name;
+        const changePhoneNumber = !window.confirm(
+            `${name} is already added to phonebook, replace the old number with a new one?`,
+        );
+        if (changePhoneNumber) return false;
+
+        // Get the user ID for the person with the same name
+        const userId = getPersonIdByName(name);
+        if (!userId) return false;
+
+        // Update phone number and redraw
+        await personApi.update(userId, person);
+        fetchData();
+        return true;
+    }
+
+    // Return a boolean depending on if the person was added
     async function addPerson(person) {
         if (nameExists(person.name)) {
-            alert(`${person.name} is already added to phonebook`);
-            return false;
+            return updatePhoneNumber(person);
         }
         personApi.create(person);
         setPersons((prevPersons) => [...prevPersons, person]);
