@@ -6,16 +6,16 @@ import PersonForm from "./PersonForm";
 import personApi from "../api/person";
 
 const Phonebook = () => {
-    const [persons, setPersons] = useState([]);
+    const [persons, setPersons] = useState(null);
     const [nameFilter, setNameFilter] = useState("");
 
     const fetchData = async () => {
         try {
             const newPersons = await personApi.getAll();
-            setPersons([...newPersons]);
-            console.log(persons);
+            setPersons(newPersons);
         } catch (error) {
             console.error("Error fetching persons:", error);
+            setPersons([]); // Avoid null references
         }
     };
 
@@ -26,7 +26,9 @@ const Phonebook = () => {
 
     // Phonebook should not contain two person with the same name (case insensitive)
     function nameExists(name) {
-        return persons.some((person) => person.name.toLowerCase() === name.toLowerCase());
+        return (
+            persons && persons.some((person) => person.name.toLowerCase() === name.toLowerCase())
+        );
     }
 
     // Return a boolean depending on if the person was added or not
@@ -56,11 +58,17 @@ const Phonebook = () => {
             <Header text="add a new" headingLevel="h2"></Header>
             <PersonForm addPersonFunction={addPerson} />
             <Header text="Numbers" headingLevel="h2"></Header>
-            <Persons
-                personList={persons}
-                nameFilter={nameFilter}
-                deletePersonFunction={deletePerson}
-            />
+            {persons === null ? (
+                <div>Loading...</div>
+            ) : persons.length === 0 ? (
+                <div>Phonebook is empty.</div>
+            ) : (
+                <Persons
+                    personList={persons}
+                    nameFilter={nameFilter}
+                    deletePersonFunction={deletePerson}
+                />
+            )}
         </article>
     );
 };
