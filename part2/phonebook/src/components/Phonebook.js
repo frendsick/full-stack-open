@@ -4,10 +4,12 @@ import Header from "./Header";
 import Persons from "./Persons";
 import PersonForm from "./PersonForm";
 import personApi from "../api/person";
+import Notification from "./Notification";
 
 const Phonebook = () => {
     const [persons, setPersons] = useState(null);
     const [nameFilter, setNameFilter] = useState("");
+    const [notification, setNotification] = useState("");
 
     const fetchData = async () => {
         try {
@@ -40,7 +42,7 @@ const Phonebook = () => {
 
     // Return a boolean depending on if the phone number was changed
     async function updatePhoneNumber(person) {
-        const name = person.name;
+        const { name, number } = person;
         const changePhoneNumber = !window.confirm(
             `${name} is already added to phonebook, replace the old number with a new one?`,
         );
@@ -53,6 +55,7 @@ const Phonebook = () => {
         // Update phone number and redraw
         await personApi.update(userId, person);
         fetchData();
+        setNotification(`The number of ${name} was changed to ${number}`);
         return true;
     }
 
@@ -63,6 +66,7 @@ const Phonebook = () => {
         }
         personApi.create(person);
         setPersons((prevPersons) => [...prevPersons, person]);
+        setNotification(`Added ${person.name}`);
         return true;
     }
 
@@ -72,6 +76,7 @@ const Phonebook = () => {
         try {
             await personApi.remove(person.id);
             fetchData();
+            setNotification(`Deleted ${person.name}`);
         } catch (error) {
             console.error(`Error deleting person with ID ${person.id}`, error);
         }
@@ -80,6 +85,7 @@ const Phonebook = () => {
     return (
         <article>
             <Header text="Phonebook" headingLevel="h1"></Header>
+            <Notification message={notification} />
             <Filter filterState={nameFilter} setFilterState={setNameFilter} />
             <Header text="add a new" headingLevel="h2"></Header>
             <PersonForm addPersonFunction={addPerson} />
