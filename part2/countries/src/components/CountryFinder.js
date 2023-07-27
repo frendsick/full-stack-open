@@ -1,7 +1,11 @@
+import { useState } from "react";
+import Filter from "./Filter";
+
 const CountryFinder = () => {
+    const [countryFilter, setCountryFilter] = useState("");
     return (
         <article>
-            <div>Hello, World</div>
+            <Filter filterState={countryFilter} setFilterState={setCountryFilter} />
         </article>
     );
 };
