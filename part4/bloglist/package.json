@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest --verbose",
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "lint": "eslint ."
   },
   "author": "Teemu Pätsi",
   "license": "MIT",
