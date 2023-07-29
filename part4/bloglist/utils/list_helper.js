@@ -17,16 +17,11 @@ const mostBlogs = (blogs) => {
     if (blogs.length === 0) return null;
 
     const blogCounts = lodash.groupBy(blogs, "author");
-    console.log(blogCounts);
     const authorsWithBlogCounts = lodash.map(blogCounts, (blogs, author) => ({
         author,
         blogs: blogs.length,
     }));
-    console.log(authorsWithBlogCounts);
-    const topAuthorInfo = lodash.maxBy(authorsWithBlogCounts, "blogs");
-    console.log(topAuthorInfo);
-
-    return topAuthorInfo;
+    return lodash.maxBy(authorsWithBlogCounts, "blogs");
 };
 
 const totalLikes = (blogs) => {
