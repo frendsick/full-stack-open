@@ -10,7 +10,7 @@ exports.connectDatabase = () => {
     const username = process.env.MONGO_USERNAME;
     const password = process.env.MONGO_PASSWORD;
     const mongoClusterUrl = process.env.MONGO_URL;
-    const table = "bloglist";
+    const table = process.env.NODE_ENV === "test" ? "test-bloglist" : "bloglist";
     const mongoUrl = `mongodb+srv://${username}:${password}@${mongoClusterUrl}/${table}?retryWrites=true&w=majority`;
 
     return mongoose
