@@ -33,7 +33,7 @@ const mostLikes = (blogs) => {
 };
 
 const totalLikes = (blogs) => {
-    return blogs.reduce((total, blog) => total + blog.likes, 0);
+    return lodash.sumBy(blogs, "likes");
 };
 
 module.exports = {
