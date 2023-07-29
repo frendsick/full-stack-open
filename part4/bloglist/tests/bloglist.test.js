@@ -71,3 +71,33 @@ describe("total likes", () => {
         expect(result).toBe(36);
     });
 });
+
+describe("favourite blog", () => {
+    const emptyList = [];
+    const oneBlog = mockBloglist[0];
+    const listWithOneBlog = [oneBlog];
+    const listWithMultipleBlogs = mockBloglist;
+    const favoriteBlog = {
+        _id: "5a422b3a1b54a676234d17f9",
+        title: "Canonical string reduction",
+        author: "Edsger W. Dijkstra",
+        url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
+        likes: 12,
+        __v: 0,
+    };
+
+    test("of empty list is null", () => {
+        const result = listHelper.favoriteBlog(emptyList);
+        expect(result).toBe(null);
+    });
+
+    test("when list has only one blog, equals that", () => {
+        const result = listHelper.favoriteBlog(listWithOneBlog);
+        expect(result).toEqual(oneBlog);
+    });
+
+    test("of a bigger list is chosen right", () => {
+        const result = listHelper.favoriteBlog(listWithMultipleBlogs);
+        expect(result).toEqual(favoriteBlog);
+    });
+});
