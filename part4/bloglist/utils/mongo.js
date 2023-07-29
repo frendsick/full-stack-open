@@ -5,6 +5,7 @@ require("dotenv").config();
 exports.fetchBlogs = () => Blog.find({});
 exports.fetchBlogById = (id) => Blog.findById(id);
 exports.saveBlog = (blog) => new Blog(blog).save();
+exports.saveListOfBlogs = (blogs) => Blog.insertMany(blogs);
 exports.deleteBlogById = (id) => Blog.findByIdAndDelete(id);
 exports.deleteAllBlogs = () => Blog.deleteMany({});
 exports.connectDatabase = () => {
