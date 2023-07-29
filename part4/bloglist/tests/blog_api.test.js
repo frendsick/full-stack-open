@@ -17,6 +17,15 @@ beforeEach(async () => {
     await sendMockBlogs();
 });
 
+describe("data characteristics", () => {
+    test("blogs are returned as json", async () => {
+        await api
+            .get(BLOG_API_URL)
+            .expect(200)
+            .expect("Content-Type", /application\/json/);
+    });
+});
+
 describe("total blogs", () => {
     test("zero when the database is empty", async () => {
         await mongo.deleteAllBlogs();
