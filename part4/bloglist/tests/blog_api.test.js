@@ -4,11 +4,10 @@ const app = require("../app");
 const api = supertest(app);
 const mongo = require("../utils/mongo");
 const config = require("./config");
+const initialBlogs = config.mockBlogs;
 
 async function sendMockBlogs() {
-    const initialNotes = config.mockBlogs;
-    await mongo.saveBlog(initialNotes[0]);
-    await mongo.saveBlog(initialNotes[1]);
+    await mongo.saveListOfBlogs(initialBlogs);
 }
 
 beforeEach(async () => {
