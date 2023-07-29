@@ -7,10 +7,7 @@ const dummy = () => {
 
 const favoriteBlog = (blogs) => {
     if (blogs.length === 0) return null;
-
-    return blogs.reduce((maxLikesBlog, blog) => {
-        return blog.likes > maxLikesBlog.likes ? blog : maxLikesBlog;
-    }, blogs[0]);
+    return lodash.maxBy(blogs, "likes");
 };
 
 const mostBlogs = (blogs) => {
