@@ -97,3 +97,26 @@ describe("favourite blog", () => {
         expect(result).toEqual(favoriteBlog);
     });
 });
+
+describe("author with most blogs", () => {
+    test("of empty list is null", () => {
+        const result = listHelper.mostBlogs([]);
+        expect(result).toBe(null);
+    });
+
+    test("when list has only one blog, equals that", () => {
+        const result = listHelper.mostBlogs(listWithOneBlog);
+        expect(result).toEqual({
+            author: "Michael Chan",
+            blogs: 1,
+        });
+    });
+
+    test("of a bigger list is chosen right", () => {
+        const result = listHelper.mostBlogs(listWithMultipleBlogs);
+        expect(result).toEqual({
+            author: "Robert C. Martin",
+            blogs: 3,
+        });
+    });
+});
