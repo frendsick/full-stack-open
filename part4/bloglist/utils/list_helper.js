@@ -1,7 +1,7 @@
 const lodash = require("lodash");
 
 // Exercise 4.3.
-const dummy = (blogs) => {
+const dummy = () => {
     return 1;
 };
 
