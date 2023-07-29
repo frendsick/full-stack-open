@@ -1,6 +1,6 @@
 const listHelper = require("../utils/list_helper");
 
-const mockBloglist = [
+const listWithMultipleBlogs = [
     {
         _id: "5a422a851b54a676234d17f7",
         title: "React patterns",
@@ -51,13 +51,13 @@ const mockBloglist = [
     },
 ];
 
-describe("total likes", () => {
-    const emptyList = [];
-    const listWithOneBlog = [mockBloglist[0]];
-    const listWithMultipleBlogs = mockBloglist;
+// Common constants
+const oneBlog = listWithMultipleBlogs[0];
+const listWithOneBlog = [oneBlog];
 
+describe("total likes", () => {
     test("of empty list is zero", () => {
-        const result = listHelper.totalLikes(emptyList);
+        const result = listHelper.totalLikes([]);
         expect(result).toBe(0);
     });
 
@@ -73,10 +73,6 @@ describe("total likes", () => {
 });
 
 describe("favourite blog", () => {
-    const emptyList = [];
-    const oneBlog = mockBloglist[0];
-    const listWithOneBlog = [oneBlog];
-    const listWithMultipleBlogs = mockBloglist;
     const favoriteBlog = {
         _id: "5a422b3a1b54a676234d17f9",
         title: "Canonical string reduction",
@@ -87,7 +83,7 @@ describe("favourite blog", () => {
     };
 
     test("of empty list is null", () => {
-        const result = listHelper.favoriteBlog(emptyList);
+        const result = listHelper.favoriteBlog([]);
         expect(result).toBe(null);
     });
 
