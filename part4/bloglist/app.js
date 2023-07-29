@@ -15,6 +15,6 @@ morgan.token("body", function (req) {
 app.use(morgan(":method :url :status :res[content-length] - :response-time ms :body"));
 
 // Routers
-app.use("/api/blog", blogRouter);
+app.use("/api/blogs", blogRouter);
 
 module.exports = app;

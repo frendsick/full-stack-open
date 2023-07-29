@@ -5,6 +5,7 @@ const api = supertest(app);
 const mongo = require("../utils/mongo");
 const config = require("./config");
 const initialBlogs = config.mockBlogs;
+const BLOG_API_URL = "/api/blogs";
 
 async function sendMockBlogs() {
     await mongo.saveListOfBlogs(initialBlogs);
@@ -18,7 +19,7 @@ beforeEach(async () => {
 
 test("api: blogs are returned as json", async () => {
     await api
-        .get("/api/blog")
+        .get(BLOG_API_URL)
         .expect(200)
         .expect("Content-Type", /application\/json/);
 });
@@ -26,14 +27,14 @@ test("api: blogs are returned as json", async () => {
 describe("total blogs", () => {
     test("zero when the database is empty", async () => {
         await mongo.deleteAllBlogs();
-        const response = await api.get("/api/blog");
+        const response = await api.get(BLOG_API_URL);
         const blogs = response.body;
         expect(blogs).toBeInstanceOf(Array);
         expect(blogs.length).toBe(0);
     });
 
     test("as many as in the mock blogs", async () => {
-        const response = await api.get("/api/blog");
+        const response = await api.get(BLOG_API_URL);
         const blogs = response.body;
         expect(blogs.length).toBe(initialBlogs.length);
     });
