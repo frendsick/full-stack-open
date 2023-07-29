@@ -31,6 +31,12 @@ describe("total blogs", () => {
         expect(blogs).toBeInstanceOf(Array);
         expect(blogs.length).toBe(0);
     });
+
+    test("as many as in the mock blogs", async () => {
+        const response = await api.get("/api/blog");
+        const blogs = response.body;
+        expect(blogs.length).toBe(initialBlogs.length);
+    });
 });
 
 afterAll(async () => {
