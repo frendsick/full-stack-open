@@ -3,6 +3,8 @@ const errorHandler = (err, _, res, next) => {
     switch (err.name) {
         case "CastError":
             return res.status(404).send({ error: "Unknown blog ID" });
+        case "JsonWebTokenError":
+            return res.status(401).send({ error: "Invalid Bearer token" });
         case "ValidationError":
             return res.status(400).send({ error: err.message });
     }

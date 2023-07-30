@@ -1,6 +1,16 @@
+const jwt = require("jsonwebtoken");
 const blogRouter = require("express").Router();
 const mongo = require("../utils/mongo");
 const userConfig = { name: 1, username: 1 }; // Fields to show for User
+
+const getBearerToken = (request) => {
+    const authorization = request.get("authorization");
+    const bearerStart = "Bearer ";
+    if (authorization?.startsWith(bearerStart)) {
+        return authorization.slice(bearerStart.length);
+    }
+    return null;
+};
 
 blogRouter.get("/", async (_, response) => {
     const blogs = await mongo.fetchAllBlogs().populate("user", userConfig);
@@ -8,6 +18,12 @@ blogRouter.get("/", async (_, response) => {
 });
 
 blogRouter.post("/", async (request, response) => {
+    const bearerToken = getBearerToken(request);
+    if (!bearerToken) return response.status(401).json({ error: "missing bearer token" });
+
+    const decodedToken = jwt.verify(bearerToken, process.env.JWT_SECRET);
+    if (!decodedToken.id) return response.status(401).json({ error: "bearer token invalid" });
+
     const newBlog = request.body;
     const addedBlog = await mongo.saveBlog(newBlog);
 
