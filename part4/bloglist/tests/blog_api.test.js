@@ -82,6 +82,20 @@ describe("blog creation", () => {
     });
 });
 
+describe("blog deletion", () => {
+    test("deleted blog does not exist in the database", async () => {
+        const blogsAtStart = await mongo.fetchAllBlogs();
+        const blogToDelete = blogsAtStart[0];
+        await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+
+        const blogsAtEnd = await mongo.fetchAllBlogs();
+        expect(blogsAtEnd).toHaveLength(blogsAtStart.length - 1);
+
+        const blogIds = blogsAtEnd.map((blog) => blog.id);
+        expect(blogIds).not.toContain(blogToDelete.id);
+    });
+});
+
 afterAll(async () => {
     await mongoose.connection.close();
 });

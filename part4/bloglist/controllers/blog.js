@@ -12,4 +12,10 @@ blogRouter.post("/", (request, response, next) => {
         .catch((error) => next(error));
 });
 
+blogRouter.delete("/:id", async (request, response, next) => {
+    const id = request.params.id;
+    await mongo.deleteBlogById(id);
+    response.status(204).end(); // Person was deleted
+});
+
 module.exports = blogRouter;
