@@ -19,4 +19,17 @@ const mockBlogs = [
     },
 ];
 
-module.exports = { mockBlogs };
+const mockUsers = [
+    {
+        name: "Chad Giga",
+        username: "gigachad",
+        password: "gigap4ssw0rd",
+    },
+    {
+        name: "Test Tester",
+        username: "tester1337",
+        password: "such_s3kret",
+    },
+];
+
+module.exports = { mockBlogs, mockUsers };
