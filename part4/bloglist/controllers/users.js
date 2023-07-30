@@ -2,6 +2,7 @@ const usersRouter = require("express").Router();
 const mongo = require("../utils/mongo");
 const bcrypt = require("bcrypt");
 
+const PASSWORD_MIN_LENGTH = 3;
 const SALT_ROUNDS = 10;
 
 usersRouter.get("/", async (_, response) => {
@@ -15,12 +16,12 @@ usersRouter.post("/", async (request, response) => {
         response.status(400).json({ error: "Missing password" });
         return;
     }
-    if (password.length < 3) {
+    if (password.length < PASSWORD_MIN_LENGTH) {
         response.status(400).json({ error: "The password must be at least 3 characters" });
         return;
     }
-    const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
 
+    const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
     const newUser = { name, username, passwordHash };
     const addedUser = await mongo.saveUser(newUser);
     response.status(201).json(addedUser);
@@ -37,7 +38,13 @@ usersRouter.put("/:id", async (request, response) => {
     const updatedFields = request.body;
 
     if ("password" in updatedFields) {
-        const passwordHash = await bcrypt.hash(updatedFields.password, SALT_ROUNDS);
+        const password = updatedFields.password;
+        if (password.length < PASSWORD_MIN_LENGTH) {
+            response.status(400).json({ error: "The password must be at least 3 characters" });
+            return;
+        }
+
+        const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
         delete updatedFields.password;
         updatedFields.passwordHash = passwordHash;
     }
