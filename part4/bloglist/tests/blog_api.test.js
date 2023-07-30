@@ -68,7 +68,7 @@ describe("blog creation", () => {
         expect(newBlog.likes).toBe(0);
     });
 
-    test("when title or url field is missing return bad request", async () => {
+    test("when required field is missing return bad request", async () => {
         const blogWithoutTitle = {
             author: "Chad Giga",
             url: "http://example.com",
