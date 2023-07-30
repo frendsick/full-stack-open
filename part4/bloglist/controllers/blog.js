@@ -19,8 +19,6 @@ blogRouter.get("/", async (_, response) => {
 
 blogRouter.post("/", async (request, response) => {
     const bearerToken = getBearerToken(request);
-    if (!bearerToken) return response.status(401).json({ error: "missing bearer token" });
-
     const decodedToken = jwt.verify(bearerToken, process.env.JWT_SECRET);
     if (!decodedToken.id) return response.status(401).json({ error: "bearer token invalid" });
 
