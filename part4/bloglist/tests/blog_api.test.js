@@ -99,7 +99,7 @@ describe("blog updation", () => {
         const blogToUpdate = blogsAtStart[0];
         const updatedFields = {
             title: "The best blog ever",
-            author: "Chad Giga",
+            likes: 1337,
         };
         await api.put(`/api/blogs/${blogToUpdate.id}`).send(updatedFields).expect(200);
 
