@@ -3,14 +3,15 @@ const blogRouter = require("express").Router();
 const mongo = require("../utils/mongo");
 const userConfig = { name: 1, username: 1 }; // Fields to show for User
 
+const decodeBearerToken = (bearerToken) => jwt.verify(bearerToken, process.env.JWT_SECRET);
+
 blogRouter.get("/", async (_, response) => {
     const blogs = await mongo.fetchAllBlogs().populate("user", userConfig);
     response.json(blogs);
 });
 
 blogRouter.post("/", async (request, response) => {
-    const bearerToken = request.token;
-    const decodedToken = jwt.verify(bearerToken, process.env.JWT_SECRET);
+    const decodedToken = decodeBearerToken(request.token);
     if (!decodedToken.id) return response.status(401).json({ error: "bearer token invalid" });
 
     const newBlog = request.body;
