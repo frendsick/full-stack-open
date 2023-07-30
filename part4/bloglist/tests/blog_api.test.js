@@ -83,6 +83,20 @@ describe("blog creation", () => {
 });
 
 describe("blog updation", () => {
+    test("changes the record in the database", async () => {
+        const blogsAtStart = await mongo.fetchAllBlogs();
+        const blogToUpdate = blogsAtStart[0];
+        const updatedFields = {
+            title: "The best blog ever",
+            author: "Chad Giga",
+        };
+        await api.put(`/api/blogs/${blogToUpdate.id}`).send(updatedFields).expect(200);
+
+        const mergedObject = { ...blogToUpdate.toObject(), ...updatedFields };
+        const updatedBlog = await mongo.fetchBlogById(blogToUpdate.id);
+        expect(updatedBlog.toObject()).toEqual(mergedObject);
+    });
+
     test("cannot update nonexistent blog", async () => {
         const blogsAtStart = await mongo.fetchAllBlogs();
         const nonexistentId = "1337";
