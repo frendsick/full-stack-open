@@ -5,6 +5,8 @@ const errorHandler = (err, _, res, next) => {
             return res.status(404).send({ error: "Unknown blog ID" });
         case "JsonWebTokenError":
             return res.status(401).send({ error: err.message });
+        case "TokenExpiredError":
+            return res.status(401).send({ error: "token expired" });
         case "ValidationError":
             return res.status(400).send({ error: err.message });
     }
