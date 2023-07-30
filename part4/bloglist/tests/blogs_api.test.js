@@ -15,8 +15,19 @@ async function sendMockBlogs() {
 
 beforeEach(async () => {
     await mongo.connectDatabase();
+
+    // Fill database with mock users as every blog has owner
     await mongo.deleteAllUsers();
-    await sendUsers(initialUsers);
+    const users = await sendUsers(initialUsers);
+
+    // Assign all blogs to the first user
+    // TODO: Assign them to different users
+    const userId = users[0].id;
+    for (let i = 0; i < initialBlogs.length; i++) {
+        initialBlogs[i].user = userId;
+    }
+
+    // Reset the blogs table in database
     await mongo.deleteAllBlogs();
     await sendMockBlogs();
 });

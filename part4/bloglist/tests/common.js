@@ -12,7 +12,7 @@ async function sendUsers(users) {
         delete usersCopy[i].password;
         usersCopy[i].passwordHash = passwordHash;
     }
-    await mongo.saveListOfUsers(usersCopy);
+    return await mongo.saveListOfUsers(usersCopy);
 }
 
 module.exports = { sendUsers };
