@@ -83,6 +83,17 @@ describe("blog creation", () => {
 });
 
 describe("blog updation", () => {
+    test("with empty object does not change the blog", async () => {
+        const blogsAtStart = await mongo.fetchAllBlogs();
+        const blogToUpdate = blogsAtStart[0];
+        const updatedFields = {};
+        await api.put(`/api/blogs/${blogToUpdate.id}`).send(updatedFields).expect(200);
+
+        // Blog is not updated
+        const updatedBlog = await mongo.fetchBlogById(blogToUpdate.id);
+        expect(updatedBlog).toEqual(blogToUpdate);
+    });
+
     test("changes the record in the database", async () => {
         const blogsAtStart = await mongo.fetchAllBlogs();
         const blogToUpdate = blogsAtStart[0];
