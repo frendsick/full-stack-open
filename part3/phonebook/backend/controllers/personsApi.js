@@ -52,7 +52,7 @@ personsApiRouter.put("/:id", async (request, response, next) => {
 
 personsApiRouter.delete("/:id", async (request, response, next) => {
     const id = request.params.id;
-    await mongo.deletePersonById(id).catch((error) => next(error));
+    await mongo.deletePersonById(id);
     response.status(204).end(); // Person was deleted
 });
 
