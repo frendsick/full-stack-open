@@ -56,7 +56,7 @@ describe("number of blogs", () => {
     });
 });
 
-describe("created blog", () => {
+describe("blog creation", () => {
     test("likes is set to zero when it was not defined", async () => {
         const blogWithoutLikes = {
             title: "The best blog ever",
@@ -65,8 +65,20 @@ describe("created blog", () => {
         };
         const response = await api.post(BLOG_API_URL).send(blogWithoutLikes);
         const newBlog = response.body;
-        console.log(newBlog);
         expect(newBlog.likes).toBe(0);
+    });
+
+    test("when title or url field is missing return bad request", async () => {
+        const blogWithoutTitle = {
+            author: "Chad Giga",
+            url: "http://example.com",
+        };
+        const blogWithoutUrl = {
+            title: "The best blog ever",
+            author: "Chad Giga",
+        };
+        await api.post(BLOG_API_URL).send(blogWithoutTitle).expect(400);
+        await api.post(BLOG_API_URL).send(blogWithoutUrl).expect(400);
     });
 });
 
