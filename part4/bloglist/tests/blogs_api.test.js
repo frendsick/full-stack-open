@@ -109,6 +109,26 @@ describe("blog creation", () => {
         await api.post(BLOGS_API_URL).send(blog).expect(401);
     });
 
+    test("when bearer token is invalid return unauthorized", async () => {
+        // Create a fake user with wrong bearer token
+        const mockUser = await createMockUser();
+        const wrongBearerToken =
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFyc3QiLCJpZCI6IjY0YzZjZmY3NzY1MDkzNGI0NTM5MGYxOSIsImlhdCI6MTY5MDc1MTEyNywiZXhwIjoxNjkwNzUxMTI4fQ.8oNWo0RGbWX5HMzGfh-QLLv9ALGaSetQ2ZaWeDtNYEU";
+
+        const blog = {
+            title: "The best blog ever",
+            author: "Chad Giga",
+            url: "http://example.com",
+            user: mockUser.id,
+        };
+
+        await api
+            .post(BLOGS_API_URL)
+            .set({ Authorization: `Bearer ${wrongBearerToken}` })
+            .send(blog)
+            .expect(401);
+    });
+
     test("when required field is missing return bad request", async () => {
         const mockUser = await createMockUser();
         const bearerToken = await getBearerToken(mockUser);
