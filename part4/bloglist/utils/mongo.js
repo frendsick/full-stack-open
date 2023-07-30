@@ -14,11 +14,10 @@ exports.updateBlog = async (id, updatedFields) => {
     const updatedBlog = await Blog.findById(id);
     return updatedBlog;
 };
-exports.connectDatabase = () => {
+exports.connectDatabase = (table) => {
     const username = process.env.MONGO_USERNAME;
     const password = process.env.MONGO_PASSWORD;
     const mongoClusterUrl = process.env.MONGO_URL;
-    const table = process.env.NODE_ENV === "test" ? "test-bloglist" : "bloglist";
     const mongoUrl = `mongodb+srv://${username}:${password}@${mongoClusterUrl}/${table}?retryWrites=true&w=majority`;
 
     return mongoose
