@@ -94,6 +94,16 @@ describe("blog deletion", () => {
         const blogIds = blogsAtEnd.map((blog) => blog.id);
         expect(blogIds).not.toContain(blogToDelete.id);
     });
+
+    test("cannot delete nonexistent blog", async () => {
+        const blogsAtStart = await mongo.fetchAllBlogs();
+        const nonexistentId = "1337";
+        await api.delete(`/api/blogs/${nonexistentId}`).expect(404);
+
+        // Blog is not deleted
+        const blogsAtEnd = await mongo.fetchAllBlogs();
+        expect(blogsAtEnd).toHaveLength(blogsAtStart.length);
+    });
 });
 
 afterAll(async () => {
