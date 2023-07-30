@@ -3,19 +3,19 @@ const mockBlogs = [
         title: "U mad, bro?",
         author: "Test Tester",
         url: "http://example.com",
-        number: 1,
+        likes: 6,
     },
     {
         title: "How to become zillionare?",
         author: "Dummy Blogger",
         url: "http://example.com",
-        number: 2,
+        likes: 42,
     },
     {
         title: "Still mad, bro?",
         author: "Test Tester",
         url: "http://example.com",
-        number: 5,
+        likes: 9,
     },
 ];
 

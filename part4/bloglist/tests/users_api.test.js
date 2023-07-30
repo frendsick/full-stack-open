@@ -6,7 +6,7 @@ const api = supertest(app);
 const mongo = require("../utils/mongo");
 const config = require("./config");
 const initialUsers = config.mockUsers;
-const { USERS_API_URL, PASSWORD_SALT_ROUNDS } = require("../common/constants");
+const { PASSWORD_SALT_ROUNDS, USERS_API_URL } = require("../common/constants");
 
 async function sendUsers(users) {
     const usersCopy = JSON.parse(JSON.stringify(users)); // Create deep copy
