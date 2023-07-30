@@ -1,12 +1,13 @@
 import { useState } from "react";
+import loginService from "../services/login";
 
-const LoginForm = () => {
+const LoginForm = ({ setUserFunction }) => {
     // Input field states
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
     // Form handlers
-    const handleLogin = (event) => {
+    const handleLogin = async (event) => {
         event.preventDefault();
 
         // Do not allow empty values
@@ -15,7 +16,8 @@ const LoginForm = () => {
             return;
         }
 
-        // TODO: Login logic
+        const loggedUser = await loginService.login(username, password);
+        setUserFunction(loggedUser.token);
     };
 
     return (

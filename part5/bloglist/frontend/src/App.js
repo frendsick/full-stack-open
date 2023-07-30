@@ -16,7 +16,7 @@ const App = () => {
         return (
             <div>
                 <Title text="Log in to application" headingLevel="h2" />
-                <LoginForm />
+                <LoginForm setUserFunction={setUser} />
             </div>
         );
     }
