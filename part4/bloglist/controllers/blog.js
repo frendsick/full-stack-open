@@ -1,15 +1,14 @@
 const blogRouter = require("express").Router();
 const mongo = require("../utils/mongo");
 
-blogRouter.get("/", (_, response) => {
-    mongo.fetchAllBlogs().then((blogs) => response.json(blogs));
+blogRouter.get("/", async (_, response) => {
+    const blogs = await mongo.fetchAllBlogs();
+    response.json(blogs);
 });
 
-blogRouter.post("/", (request, response, next) => {
-    return mongo
-        .saveBlog(request.body)
-        .then((blog) => response.status(201).json(blog))
-        .catch((error) => next(error));
+blogRouter.post("/", async (request, response) => {
+    const blog = await mongo.saveBlog(request.body);
+    response.status(201).json(blog);
 });
 
 blogRouter.get("/:id", async (request, response) => {
