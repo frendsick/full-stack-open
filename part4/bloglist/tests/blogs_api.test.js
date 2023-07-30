@@ -5,7 +5,9 @@ const api = supertest(app);
 const mongo = require("../utils/mongo");
 const config = require("./config");
 const { BLOGS_API_URL } = require("../common/constants");
+const { sendUsers } = require("./common");
 const initialBlogs = config.mockBlogs;
+const initialUsers = config.mockUsers;
 
 async function sendMockBlogs() {
     await mongo.saveListOfBlogs(initialBlogs);
@@ -13,6 +15,8 @@ async function sendMockBlogs() {
 
 beforeEach(async () => {
     await mongo.connectDatabase();
+    await mongo.deleteAllUsers();
+    await sendUsers(initialUsers);
     await mongo.deleteAllBlogs();
     await sendMockBlogs();
 });
