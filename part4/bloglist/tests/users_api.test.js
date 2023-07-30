@@ -41,6 +41,18 @@ describe("number of users", () => {
         const users = response.body;
         expect(users.length).toBe(initialUsers.length);
     });
+
+    test("grows when new user is added", async () => {
+        const newUser = {
+            name: "Lil Wayne",
+            username: "wayner",
+            password: "uwillnevergu3ss",
+        };
+        await api.post(USERS_API_URL).send(newUser);
+        const response = await api.get(USERS_API_URL);
+        const users = response.body;
+        expect(users.length).toBe(initialUsers.length + 1);
+    });
 });
 
 afterAll(async () => {
