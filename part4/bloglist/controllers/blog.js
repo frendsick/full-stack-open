@@ -2,7 +2,7 @@ const blogRouter = require("express").Router();
 const mongo = require("../utils/mongo");
 
 blogRouter.get("/", (_, response) => {
-    mongo.fetchBlogs().then((blogs) => response.json(blogs));
+    mongo.fetchAllBlogs().then((blogs) => response.json(blogs));
 });
 
 blogRouter.post("/", (request, response, next) => {
