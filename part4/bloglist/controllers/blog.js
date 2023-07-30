@@ -7,8 +7,9 @@ blogRouter.get("/", async (_, response) => {
 });
 
 blogRouter.post("/", async (request, response) => {
-    const blog = await mongo.saveBlog(request.body);
-    response.status(201).json(blog);
+    const newBlog = request.body;
+    const addedBlog = await mongo.saveBlog(newBlog);
+    response.status(201).json(addedBlog);
 });
 
 blogRouter.get("/:id", async (request, response) => {
