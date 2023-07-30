@@ -1,10 +1,11 @@
 const usersRouter = require("express").Router();
 const mongo = require("../utils/mongo");
 const bcrypt = require("bcrypt");
+const blogConfig = { title: 1, author: 1, url: 1 }; // Fields to show for related Blogs
 const { PASSWORD_MIN_LENGTH, PASSWORD_SALT_ROUNDS } = require("../common/constants");
 
 usersRouter.get("/", async (_, response) => {
-    const users = await mongo.fetchAllUsers();
+    const users = await mongo.fetchAllUsers().populate("blogs", blogConfig);
     response.json(users);
 });
 
@@ -19,16 +20,19 @@ usersRouter.post("/", async (request, response) => {
         return;
     }
 
+    // Create new user and return it's information
     const passwordHash = await bcrypt.hash(password, PASSWORD_SALT_ROUNDS);
     const newUser = { name, username, passwordHash };
     const addedUser = await mongo.saveUser(newUser);
-    response.status(201).json(addedUser);
+    const populatedUser = await addedUser.populate("blogs", blogConfig);
+    response.status(201).json(populatedUser);
 });
 
 usersRouter.get("/:id", async (request, response) => {
     const id = request.params.id;
     const user = await mongo.fetchUserById(id);
-    response.json(user);
+    const populatedUser = await user.populate("blogs", blogConfig);
+    response.json(populatedUser);
 });
 
 usersRouter.put("/:id", async (request, response) => {
@@ -46,8 +50,10 @@ usersRouter.put("/:id", async (request, response) => {
         delete updatedFields.password;
         updatedFields.passwordHash = passwordHash;
     }
+
     const updatedUser = await mongo.updateUser(id, updatedFields);
-    response.json(updatedUser);
+    const populatedUser = await updatedUser.populate("blogs", blogConfig);
+    response.json(populatedUser);
 });
 
 usersRouter.delete("/:id", async (request, response) => {
