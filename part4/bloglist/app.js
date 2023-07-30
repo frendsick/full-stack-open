@@ -18,6 +18,9 @@ morgan.token("body", function (req) {
 });
 app.use(morgan(":method :url :status :res[content-length] - :response-time ms :body"));
 
+// Extract Bearer token from Authorization header
+app.use(middleware.tokenExtractor);
+
 // Routers
 app.use("/api/blogs", blogRouter);
 app.use("/api/login", loginRouter);

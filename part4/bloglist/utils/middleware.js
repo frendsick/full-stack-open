@@ -14,6 +14,16 @@ const errorHandler = (err, _, res, next) => {
     next(err);
 };
 
+const tokenExtractor = (request, _, next) => {
+    const authorization = request.get("authorization");
+    const bearerStart = "Bearer ";
+    if (authorization?.startsWith(bearerStart)) {
+        request.token = authorization.slice(bearerStart.length);
+    }
+    next();
+};
+
 module.exports = {
     errorHandler,
+    tokenExtractor,
 };
