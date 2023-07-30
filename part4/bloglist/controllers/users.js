@@ -28,7 +28,11 @@ usersRouter.put("/:id", async (request, response) => {
     const id = request.params.id;
     const updatedFields = request.body;
 
-    // TODO: Password change
+    if ("password" in updatedFields) {
+        const passwordHash = await bcrypt.hash(updatedFields.password, SALT_ROUNDS);
+        delete updatedFields.password;
+        updatedFields.passwordHash = passwordHash;
+    }
     const updatedUser = await mongo.updateUser(id, updatedFields);
     response.json(updatedUser);
 });
@@ -36,7 +40,7 @@ usersRouter.put("/:id", async (request, response) => {
 usersRouter.delete("/:id", async (request, response) => {
     const id = request.params.id;
     await mongo.deleteUserById(id);
-    response.status(204).end(); // Person was deleted
+    response.status(204).end();
 });
 
 module.exports = usersRouter;
