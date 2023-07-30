@@ -18,6 +18,13 @@ blogRouter.get("/:id", async (request, response) => {
     response.json(blog);
 });
 
+blogRouter.put("/:id", async (request, response) => {
+    const id = request.params.id;
+    const updatedFields = request.body;
+    const updatedBlog = await mongo.updateBlog(id, updatedFields);
+    response.json(updatedBlog);
+});
+
 blogRouter.delete("/:id", async (request, response, next) => {
     const id = request.params.id;
     await mongo.deleteBlogById(id);
