@@ -1,10 +1,11 @@
 const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
 const supertest = require("supertest");
 const app = require("../app");
 const api = supertest(app);
 const mongo = require("../utils/mongo");
 const config = require("./config");
-const { BLOGS_API_URL } = require("../common/constants");
+const { BLOGS_API_URL, USERS_API_URL } = require("../common/constants");
 const initialBlogs = config.mockBlogs;
 
 async function sendMockBlogs() {
@@ -13,6 +14,22 @@ async function sendMockBlogs() {
         initialBlogs[i].user = mockUserId;
     }
     await mongo.saveListOfBlogs(initialBlogs);
+}
+
+async function createMockUser() {
+    await mongo.deleteAllUsers();
+    const response = await api.post(USERS_API_URL).send(config.mockUsers[0]);
+    return response.body;
+}
+
+async function getBearerToken(user) {
+    const userForToken = {
+        username: user.username,
+        id: user.id,
+    };
+
+    const hourInSeconds = 60 * 60;
+    return jwt.sign(userForToken, process.env.JWT_SECRET, { expiresIn: hourInSeconds });
 }
 
 beforeEach(async () => {
@@ -62,12 +79,20 @@ describe("number of blogs", () => {
 
 describe("blog creation", () => {
     test("likes is set to zero when it was not defined", async () => {
+        const mockUser = await createMockUser();
+        const bearerToken = await getBearerToken(mockUser);
         const blogWithoutLikes = {
             title: "The best blog ever",
             author: "Chad Giga",
             url: "http://example.com",
+            user: mockUser.id,
         };
-        const response = await api.post(BLOGS_API_URL).send(blogWithoutLikes);
+
+        const response = await api
+            .post(BLOGS_API_URL)
+            .set({ Authorization: `Bearer ${bearerToken}` })
+            .send(blogWithoutLikes);
+
         const newBlog = response.body;
         expect(newBlog.likes).toBe(0);
     });
