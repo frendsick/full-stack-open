@@ -159,13 +159,25 @@ describe("blog updation", () => {
 
 describe("blog deletion", () => {
     test("deleted blog does not exist in the database", async () => {
-        const blogsAtStart = await mongo.fetchAllBlogs();
-        const blogToDelete = blogsAtStart[0];
-        await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+        // Create blog owned by a mock user
+        const mockUser = await createMockUser();
+        const bearerToken = await getBearerToken(mockUser);
+        mockBlog = config.mockBlogs[0];
+        mockBlog.user = mockUser.id;
+        const blogToDelete = await mongo.saveBlog(mockBlog);
 
+        // Delete the blog owned by the mock user
+        const blogsAtStart = await mongo.fetchAllBlogs();
+        await api
+            .delete(`/api/blogs/${blogToDelete.id}`)
+            .set({ Authorization: `Bearer ${bearerToken}` })
+            .expect(204);
+
+        // Database has one less blog
         const blogsAtEnd = await mongo.fetchAllBlogs();
         expect(blogsAtEnd).toHaveLength(blogsAtStart.length - 1);
 
+        // Database does not contain the deleted blog
         const blogIds = blogsAtEnd.map((blog) => blog.id);
         expect(blogIds).not.toContain(blogToDelete.id);
     });
