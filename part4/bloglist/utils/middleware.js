@@ -27,7 +27,6 @@ const tokenExtractor = (request, _, next) => {
 };
 
 const decodeBearerToken = (bearerToken) => {
-    console.log(bearerToken);
     return jwt.verify(bearerToken, process.env.JWT_SECRET);
 };
 
