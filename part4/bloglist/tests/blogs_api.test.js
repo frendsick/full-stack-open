@@ -97,6 +97,18 @@ describe("blog creation", () => {
         expect(newBlog.likes).toBe(0);
     });
 
+    test("when bearer token is not provided return unauthorized", async () => {
+        const mockUser = await createMockUser();
+        const blog = {
+            title: "The best blog ever",
+            author: "Chad Giga",
+            url: "http://example.com",
+            user: mockUser.id,
+        };
+
+        await api.post(BLOGS_API_URL).send(blog).expect(401);
+    });
+
     test("when required field is missing return bad request", async () => {
         const mockUser = await createMockUser();
         const bearerToken = await getBearerToken(mockUser);
