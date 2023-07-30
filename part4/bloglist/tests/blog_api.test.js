@@ -33,7 +33,7 @@ describe("data characteristics", () => {
     });
 });
 
-describe("total blogs", () => {
+describe("number of blogs", () => {
     test("zero when the database is empty", async () => {
         await mongo.deleteAllBlogs();
         const response = await api.get(BLOG_API_URL);
@@ -46,6 +46,13 @@ describe("total blogs", () => {
         const response = await api.get(BLOG_API_URL);
         const blogs = response.body;
         expect(blogs.length).toBe(initialBlogs.length);
+    });
+
+    test("grows when new blog is added", async () => {
+        await mongo.saveBlog(initialBlogs[0]);
+        const response = await api.get(BLOG_API_URL);
+        const blogs = response.body;
+        expect(blogs.length).toBe(initialBlogs.length + 1);
     });
 });
 
