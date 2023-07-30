@@ -47,8 +47,18 @@ blogRouter.put("/:id", async (request, response) => {
 });
 
 blogRouter.delete("/:id", async (request, response) => {
-    const id = request.params.id;
-    await mongo.deleteBlogById(id);
+    const decodedToken = decodeBearerToken(request.token);
+    if (!decodedToken.id) return response.status(401).json({ error: "bearer token invalid" });
+
+    // Only blog's creator can delete it
+    const blogId = request.params.id;
+    const userId = decodedToken.id;
+    const targetBlog = await mongo.fetchBlogById(blogId);
+    if (targetBlog?.user.toString() !== userId)
+        return response.status(401).json({ error: "you are not authorized for deleting the blog" });
+
+    // Delete the blog
+    await mongo.deleteBlogById(blogId);
     response.status(204).end();
 });
 
