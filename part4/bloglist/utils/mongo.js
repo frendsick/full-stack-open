@@ -1,8 +1,10 @@
 const mongoose = require("mongoose");
 const Blog = require("../models/blog");
+const User = require("../models/user");
 const enableUpdateValidator = { runValidators: true };
 require("dotenv").config();
 
+// Blogs
 exports.fetchAllBlogs = () => Blog.find({});
 exports.fetchBlogById = (id) => Blog.findById(id);
 exports.saveBlog = (blog) => new Blog(blog).save();
@@ -13,6 +15,19 @@ exports.updateBlog = async (id, updatedFields) => {
     await Blog.findByIdAndUpdate(id, updatedFields, enableUpdateValidator);
     const updatedBlog = await Blog.findById(id);
     return updatedBlog;
+};
+
+// Users
+exports.fetchAllUsers = () => User.find({});
+exports.fetchUserById = (id) => User.findById(id);
+exports.saveUser = (user) => new User(user).save();
+exports.saveListOfUsers = (users) => User.insertMany(users);
+exports.deleteUserById = (id) => User.findByIdAndDelete(id);
+exports.deleteAllUsers = () => User.deleteMany({});
+exports.updateUser = async (id, updatedFields) => {
+    await User.findByIdAndUpdate(id, updatedFields, enableUpdateValidator);
+    const updatedUser = await User.findById(id);
+    return updatedUser;
 };
 
 exports.connectDatabase = (databaseName) => {
