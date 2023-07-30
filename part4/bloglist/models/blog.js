@@ -17,12 +17,13 @@ const blogSchema = new mongoose.Schema({
     },
 });
 
-blogSchema.set("toJSON", {
-    transform: (_, returnedObject) => {
-        returnedObject.id = returnedObject._id.toString();
-        delete returnedObject._id;
-        delete returnedObject.__v;
-    },
-});
+const blogTransform = (_, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString();
+    delete returnedObject._id;
+    delete returnedObject.__v;
+};
+
+blogSchema.set("toObject", { transform: blogTransform });
+blogSchema.set("toJSON", { transform: blogTransform });
 
 module.exports = mongoose.model("Blog", blogSchema);
