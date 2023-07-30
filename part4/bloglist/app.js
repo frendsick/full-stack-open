@@ -21,11 +21,8 @@ app.use(morgan(":method :url :status :res[content-length] - :response-time ms :b
 // Extracts Bearer token from Authorization header
 app.use(middleware.tokenExtractor);
 
-// Extracts user information from Bearer token
-app.use(middleware.userExtractor);
-
 // Routers
-app.use("/api/blogs", blogRouter);
+app.use("/api/blogs", blogRouter, middleware.userExtractor);
 app.use("/api/login", loginRouter);
 app.use("/api/users", usersRouter);
 
