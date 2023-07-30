@@ -1,9 +1,7 @@
 const usersRouter = require("express").Router();
 const mongo = require("../utils/mongo");
 const bcrypt = require("bcrypt");
-
-const PASSWORD_MIN_LENGTH = 3;
-const SALT_ROUNDS = 10;
+const { PASSWORD_MIN_LENGTH, PASSWORD_SALT_ROUNDS } = require("../common/constants");
 
 usersRouter.get("/", async (_, response) => {
     const users = await mongo.fetchAllUsers();
@@ -21,7 +19,7 @@ usersRouter.post("/", async (request, response) => {
         return;
     }
 
-    const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
+    const passwordHash = await bcrypt.hash(password, PASSWORD_SALT_ROUNDS);
     const newUser = { name, username, passwordHash };
     const addedUser = await mongo.saveUser(newUser);
     response.status(201).json(addedUser);
@@ -44,7 +42,7 @@ usersRouter.put("/:id", async (request, response) => {
             return;
         }
 
-        const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
+        const passwordHash = await bcrypt.hash(password, PASSWORD_SALT_ROUNDS);
         delete updatedFields.password;
         updatedFields.passwordHash = passwordHash;
     }

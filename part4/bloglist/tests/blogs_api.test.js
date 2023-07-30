@@ -4,8 +4,8 @@ const app = require("../app");
 const api = supertest(app);
 const mongo = require("../utils/mongo");
 const config = require("./config");
+const { BLOGS_API_URL } = require("../common/constants");
 const initialBlogs = config.mockBlogs;
-const BLOG_API_URL = "/api/blogs";
 
 async function sendMockBlogs() {
     await mongo.saveListOfBlogs(initialBlogs);
@@ -20,13 +20,13 @@ beforeEach(async () => {
 describe("data characteristics", () => {
     test("blogs are returned as json", async () => {
         await api
-            .get(BLOG_API_URL)
+            .get(BLOGS_API_URL)
             .expect(200)
             .expect("Content-Type", /application\/json/);
     });
 
     test("blog contains id field", async () => {
-        const response = await api.get(BLOG_API_URL);
+        const response = await api.get(BLOGS_API_URL);
         const blogs = response.body;
         const firstBlog = blogs[0];
         expect(firstBlog.id).toBeDefined();
@@ -36,21 +36,21 @@ describe("data characteristics", () => {
 describe("number of blogs", () => {
     test("zero when the database is empty", async () => {
         await mongo.deleteAllBlogs();
-        const response = await api.get(BLOG_API_URL);
+        const response = await api.get(BLOGS_API_URL);
         const blogs = response.body;
         expect(blogs).toBeInstanceOf(Array);
         expect(blogs.length).toBe(0);
     });
 
     test("as many as in the mock blogs", async () => {
-        const response = await api.get(BLOG_API_URL);
+        const response = await api.get(BLOGS_API_URL);
         const blogs = response.body;
         expect(blogs.length).toBe(initialBlogs.length);
     });
 
     test("grows when new blog is added", async () => {
         await mongo.saveBlog(initialBlogs[0]);
-        const response = await api.get(BLOG_API_URL);
+        const response = await api.get(BLOGS_API_URL);
         const blogs = response.body;
         expect(blogs.length).toBe(initialBlogs.length + 1);
     });
@@ -63,7 +63,7 @@ describe("blog creation", () => {
             author: "Chad Giga",
             url: "http://example.com",
         };
-        const response = await api.post(BLOG_API_URL).send(blogWithoutLikes);
+        const response = await api.post(BLOGS_API_URL).send(blogWithoutLikes);
         const newBlog = response.body;
         expect(newBlog.likes).toBe(0);
     });
@@ -77,8 +77,8 @@ describe("blog creation", () => {
             title: "The best blog ever",
             author: "Chad Giga",
         };
-        await api.post(BLOG_API_URL).send(blogWithoutTitle).expect(400);
-        await api.post(BLOG_API_URL).send(blogWithoutUrl).expect(400);
+        await api.post(BLOGS_API_URL).send(blogWithoutTitle).expect(400);
+        await api.post(BLOGS_API_URL).send(blogWithoutUrl).expect(400);
     });
 });
 
