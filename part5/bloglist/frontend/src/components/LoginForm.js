@@ -17,6 +17,11 @@ const LoginForm = ({ setUserFunction }) => {
         }
 
         const loggedUser = await loginService.login(username, password);
+        if (!loggedUser) {
+            window.alert("Wrong username or password");
+            return;
+        }
+
         setUserFunction(loggedUser.token);
     };
 

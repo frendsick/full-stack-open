@@ -6,8 +6,18 @@ const login = async (username, password) => {
         username,
         password,
     };
-    const response = await axios.post(`${baseUrl}`, user);
-    return response.data;
+    return await axios
+        .post(`${baseUrl}`, user)
+        .then((response) => response.data)
+        .catch((error) => {
+            if (error.response && error.response.status === 401) {
+                console.error("Login failed: Invalid credentials");
+                return null;
+            } else {
+                console.error("An error occurred:", error.message);
+                throw error;
+            }
+        });
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
