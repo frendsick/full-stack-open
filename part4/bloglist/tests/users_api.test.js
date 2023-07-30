@@ -55,6 +55,21 @@ describe("number of users", () => {
     });
 });
 
+describe("user creation", () => {
+    test("when required field is missing return bad request", async () => {
+        const userWithoutUsername = {
+            name: "Lil Wayne",
+            password: "uwillnevergu3ss",
+        };
+        const userWithoutPassword = {
+            name: "Lil Wayne",
+            username: "wayner",
+        };
+        await api.post(USERS_API_URL).send(userWithoutUsername).expect(400);
+        await api.post(USERS_API_URL).send(userWithoutPassword).expect(400);
+    });
+});
+
 afterAll(async () => {
     await mongoose.connection.close();
 });
