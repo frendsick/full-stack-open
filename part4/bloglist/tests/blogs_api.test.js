@@ -171,9 +171,14 @@ describe("blog deletion", () => {
     });
 
     test("cannot delete nonexistent blog", async () => {
+        const mockUser = await createMockUser();
+        const bearerToken = await getBearerToken(mockUser);
         const blogsAtStart = await mongo.fetchAllBlogs();
         const nonexistentId = "1337";
-        await api.delete(`/api/blogs/${nonexistentId}`).expect(404);
+        await api
+            .delete(`/api/blogs/${nonexistentId}`)
+            .set({ Authorization: `Bearer ${bearerToken}` })
+            .expect(404);
 
         // Blog is not deleted
         const blogsAtEnd = await mongo.fetchAllBlogs();
