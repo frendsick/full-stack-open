@@ -101,13 +101,21 @@ describe("blog creation", () => {
         const blogWithoutTitle = {
             author: "Chad Giga",
             url: "http://example.com",
+            user: mockUserId,
         };
         const blogWithoutUrl = {
             title: "The best blog ever",
             author: "Chad Giga",
+            user: mockUserId,
+        };
+        const blogWithoutUser = {
+            title: "The best blog ever",
+            author: "Chad Giga",
+            url: "http://example.com",
         };
         await api.post(BLOGS_API_URL).send(blogWithoutTitle).expect(400);
         await api.post(BLOGS_API_URL).send(blogWithoutUrl).expect(400);
+        await api.post(BLOGS_API_URL).send(blogWithoutUser).expect(400);
     });
 });
 
