@@ -3,6 +3,7 @@ const app = express();
 require("express-async-errors");
 const cors = require("cors");
 const blogRouter = require("./controllers/blog");
+const loginRouter = require("./controllers/login");
 const usersRouter = require("./controllers/users");
 const middleware = require("./utils/middleware");
 
@@ -19,6 +20,7 @@ app.use(morgan(":method :url :status :res[content-length] - :response-time ms :b
 
 // Routers
 app.use("/api/blogs", blogRouter);
+app.use("/api/login", loginRouter);
 app.use("/api/users", usersRouter);
 
 // Custom error handler middleware
