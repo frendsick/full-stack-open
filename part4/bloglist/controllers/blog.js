@@ -25,7 +25,7 @@ blogRouter.put("/:id", async (request, response) => {
     response.json(updatedBlog);
 });
 
-blogRouter.delete("/:id", async (request, response, next) => {
+blogRouter.delete("/:id", async (request, response) => {
     const id = request.params.id;
     await mongo.deleteBlogById(id);
     response.status(204).end(); // Person was deleted
