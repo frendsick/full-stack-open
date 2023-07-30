@@ -82,6 +82,19 @@ describe("blog creation", () => {
     });
 });
 
+describe("blog updation", () => {
+    test("cannot update nonexistent blog", async () => {
+        const blogsAtStart = await mongo.fetchAllBlogs();
+        const nonexistentId = "1337";
+        const updatedFields = { title: "The best blog ever" };
+        await api.put(`/api/blogs/${nonexistentId}`).send(updatedFields).expect(404);
+
+        // Blog is not updated
+        const blogsAtEnd = await mongo.fetchAllBlogs();
+        expect(blogsAtEnd).toHaveLength(blogsAtStart.length);
+    });
+});
+
 describe("blog deletion", () => {
     test("deleted blog does not exist in the database", async () => {
         const blogsAtStart = await mongo.fetchAllBlogs();
