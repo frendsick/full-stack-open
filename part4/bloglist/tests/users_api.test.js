@@ -35,6 +35,12 @@ describe("number of users", () => {
         expect(users).toBeInstanceOf(Array);
         expect(users.length).toBe(0);
     });
+
+    test("as many as in the mock users", async () => {
+        const response = await api.get(USERS_API_URL);
+        const users = response.body;
+        expect(users.length).toBe(initialUsers.length);
+    });
 });
 
 afterAll(async () => {
