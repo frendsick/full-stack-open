@@ -56,6 +56,20 @@ describe("number of blogs", () => {
     });
 });
 
+describe("created blog", () => {
+    test("likes is set to zero when it was not defined", async () => {
+        const blogWithoutLikes = {
+            title: "The best blog ever",
+            author: "Chad Giga",
+            url: "http://example.com",
+        };
+        const response = await api.post(BLOG_API_URL).send(blogWithoutLikes);
+        const newBlog = response.body;
+        console.log(newBlog);
+        expect(newBlog.likes).toBe(0);
+    });
+});
+
 afterAll(async () => {
     await mongoose.connection.close();
 });
