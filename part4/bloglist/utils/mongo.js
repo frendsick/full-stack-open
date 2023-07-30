@@ -24,12 +24,13 @@ exports.saveUser = (user) => new User(user).save();
 exports.saveListOfUsers = (users) => User.insertMany(users);
 exports.deleteUserById = (id) => User.findByIdAndDelete(id);
 exports.deleteAllUsers = () => User.deleteMany({});
+exports.addBlogToUser = (id, blog) =>
+    User.findByIdAndUpdate(id, { $push: { blogs: blog.id } }, { new: true });
 exports.updateUser = async (id, updatedFields) => {
     await User.findByIdAndUpdate(id, updatedFields, enableUpdateValidator);
     const updatedUser = await User.findById(id);
     return updatedUser;
 };
-
 exports.connectDatabase = (databaseName) => {
     const username = process.env.MONGO_USERNAME;
     const password = process.env.MONGO_PASSWORD;

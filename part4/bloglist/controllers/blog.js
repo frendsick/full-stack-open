@@ -10,6 +10,11 @@ blogRouter.get("/", async (_, response) => {
 blogRouter.post("/", async (request, response) => {
     const newBlog = request.body;
     const addedBlog = await mongo.saveBlog(newBlog);
+
+    // Append the Blog to relating User's blogs
+    const userId = request.body.user;
+    await mongo.addBlogToUser(userId, addedBlog);
+
     const populatedBlog = await addedBlog.populate("user", userConfig);
     response.status(201).json(populatedBlog);
 });
