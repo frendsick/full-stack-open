@@ -24,6 +24,13 @@ describe("data characteristics", () => {
             .expect(200)
             .expect("Content-Type", /application\/json/);
     });
+
+    test("blog contains id field", async () => {
+        const response = await api.get(BLOG_API_URL);
+        const blogs = response.body;
+        const firstBlog = blogs[0];
+        expect(firstBlog.id).toBeDefined();
+    });
 });
 
 describe("total blogs", () => {
