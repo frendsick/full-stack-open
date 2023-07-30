@@ -98,24 +98,27 @@ describe("blog creation", () => {
     });
 
     test("when required field is missing return bad request", async () => {
+        const mockUser = await createMockUser();
+        const bearerToken = await getBearerToken(mockUser);
         const blogWithoutTitle = {
             author: "Chad Giga",
             url: "http://example.com",
-            user: mockUserId,
+            user: mockUser.id,
         };
         const blogWithoutUrl = {
             title: "The best blog ever",
             author: "Chad Giga",
-            user: mockUserId,
+            user: mockUser.id,
         };
         const blogWithoutUser = {
             title: "The best blog ever",
             author: "Chad Giga",
             url: "http://example.com",
         };
-        await api.post(BLOGS_API_URL).send(blogWithoutTitle).expect(400);
-        await api.post(BLOGS_API_URL).send(blogWithoutUrl).expect(400);
-        await api.post(BLOGS_API_URL).send(blogWithoutUser).expect(400);
+        const authorization = { Authorization: `Bearer ${bearerToken}` };
+        await api.post(BLOGS_API_URL).set(authorization).send(blogWithoutTitle).expect(400);
+        await api.post(BLOGS_API_URL).set(authorization).send(blogWithoutUrl).expect(400);
+        await api.post(BLOGS_API_URL).set(authorization).send(blogWithoutUser).expect(400);
     });
 });
 
