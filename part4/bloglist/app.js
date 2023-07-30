@@ -1,7 +1,8 @@
 const express = require("express");
 const app = express();
-const blogRouter = require("./controllers/blog");
 const cors = require("cors");
+const blogRouter = require("./controllers/blog");
+const middleware = require("./utils/middleware");
 
 // Allow requests from other origins
 app.use(cors());
@@ -16,5 +17,8 @@ app.use(morgan(":method :url :status :res[content-length] - :response-time ms :b
 
 // Routers
 app.use("/api/blogs", blogRouter);
+
+// Custom error handler middleware
+app.use(middleware.errorHandler);
 
 module.exports = app;
