@@ -5,29 +5,18 @@ const api = supertest(app);
 const mongo = require("../utils/mongo");
 const config = require("./config");
 const { BLOGS_API_URL } = require("../common/constants");
-const { sendUsers } = require("./common");
 const initialBlogs = config.mockBlogs;
-const initialUsers = config.mockUsers;
 
 async function sendMockBlogs() {
+    const mockUserId = "64c68250534ed48ad76db201";
+    for (let i = 0; i < initialBlogs.length; i++) {
+        initialBlogs[i].user = mockUserId;
+    }
     await mongo.saveListOfBlogs(initialBlogs);
 }
 
 beforeEach(async () => {
     await mongo.connectDatabase();
-
-    // Fill database with mock users as every blog has owner
-    await mongo.deleteAllUsers();
-    const users = await sendUsers(initialUsers);
-
-    // Assign all blogs to the first user
-    // TODO: Assign them to different users
-    const userId = users[0].id;
-    for (let i = 0; i < initialBlogs.length; i++) {
-        initialBlogs[i].user = userId;
-    }
-
-    // Reset the blogs table in database
     await mongo.deleteAllBlogs();
     await sendMockBlogs();
 });
