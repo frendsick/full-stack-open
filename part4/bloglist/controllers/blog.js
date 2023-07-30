@@ -11,10 +11,16 @@ blogRouter.post("/", async (request, response) => {
     const newBlog = request.body;
     const addedBlog = await mongo.saveBlog(newBlog);
 
-    // Append the Blog to relating User's blogs
+    // Verify that the given User exists
     const userId = request.body.user;
-    await mongo.addBlogToUser(userId, addedBlog);
+    const existingUser = await mongo.fetchUserById(userId);
+    if (!existingUser) {
+        response.status(404).json({ error: `User with ID '${userId}' does not exist` });
+        return;
+    }
 
+    // Append the Blog to relating User's blogs and return its information
+    await mongo.addBlogToUser(userId, addedBlog);
     const populatedBlog = await addedBlog.populate("user", userConfig);
     response.status(201).json(populatedBlog);
 });
