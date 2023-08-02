@@ -1,17 +1,24 @@
 import { useState, useEffect } from "react";
-import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import LoginForm from "./components/LoginForm";
 import Title from "./components/Title";
 import BlogList from "./components/BlogList";
+import { LOGGED_USER_STORAGE } from "./common/constants";
 
 const App = () => {
     const [blogs, setBlogs] = useState([]);
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        blogService.getAll().then((blogs) => setBlogs(blogs));
+        const loggedUserJSON = window.localStorage.getItem(LOGGED_USER_STORAGE);
+        if (!loggedUserJSON) return;
+        const user = JSON.parse(loggedUserJSON);
+        setUser(user);
     }, []);
+
+    useEffect(() => {
+        if (user) blogService.getAll().then((blogs) => setBlogs(blogs));
+    }, [user]);
 
     if (user === null) {
         return (

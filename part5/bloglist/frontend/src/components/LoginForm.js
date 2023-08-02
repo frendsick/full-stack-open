@@ -1,5 +1,6 @@
 import { useState } from "react";
 import loginService from "../services/login";
+import { LOGGED_USER_STORAGE } from "../common/constants";
 
 const LoginForm = ({ setUserFunction }) => {
     // Input field states
@@ -11,18 +12,14 @@ const LoginForm = ({ setUserFunction }) => {
         event.preventDefault();
 
         // Do not allow empty values
-        if (!username || !password) {
-            window.alert("Missing username or password");
-            return;
-        }
+        if (!username || !password) return window.alert("Missing username or password");
 
         const loggedUser = await loginService.login(username, password);
-        if (!loggedUser) {
-            window.alert("Wrong username or password");
-            return;
-        }
+        if (!loggedUser) return window.alert("Wrong username or password");
 
-        setUserFunction(loggedUser.token);
+        // Save the session token on the React state and the session storage
+        window.localStorage.setItem(LOGGED_USER_STORAGE, JSON.stringify(loggedUser));
+        setUserFunction(loggedUser);
     };
 
     return (
