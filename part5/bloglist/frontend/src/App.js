@@ -4,6 +4,7 @@ import LoginForm from "./components/LoginForm";
 import Title from "./components/Title";
 import BlogList from "./components/BlogList";
 import { LOGGED_USER_STORAGE } from "./common/constants";
+import LogoutButton from "./components/LogoutButton";
 
 const App = () => {
     const [blogs, setBlogs] = useState([]);
@@ -31,7 +32,8 @@ const App = () => {
 
     return (
         <div>
-            <h2>Blogs</h2>
+            <LogoutButton setUserFunction={setUser} />
+            <Title text="Blogs" headingLevel="h2" />
             <BlogList blogs={blogs} />
         </div>
     );
