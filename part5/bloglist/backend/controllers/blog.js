@@ -19,10 +19,8 @@ blogRouter.post("/", async (request, response) => {
 
     // Verify that the given User exists
     const userId = request.user.id;
-    if (!userId) {
-        response.status(404).json({ error: `User with ID '${userId}' does not exist` });
-        return;
-    }
+    if (!userId)
+        return response.status(404).json({ error: `User with ID '${userId}' does not exist` });
 
     // Append the Blog to relating User's blogs and return its information
     await mongo.addBlogToUser(userId, addedBlog);
