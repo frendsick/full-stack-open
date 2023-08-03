@@ -32,8 +32,9 @@ const App = () => {
 
     return (
         <div>
-            <LogoutButton setUserFunction={setUser} />
             <Title text="Blogs" headingLevel="h2" />
+            <LogoutButton setUserFunction={setUser} />
+            <p>{user.name} logged in</p>
             <BlogList blogs={blogs} />
         </div>
     );
