@@ -33,8 +33,8 @@ const App = () => {
     return (
         <div>
             <Title text="Blogs" headingLevel="h2" />
+            <span>{user.name} logged in</span>
             <LogoutButton setUserFunction={setUser} />
-            <p>{user.name} logged in</p>
             <BlogList blogs={blogs} />
         </div>
     );
