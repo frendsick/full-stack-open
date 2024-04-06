@@ -1,6 +1,6 @@
 const usersRouter = require("express").Router();
 const mongo = require("../utils/mongo");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const blogConfig = { title: 1, author: 1, url: 1 }; // Fields to show for related Blogs
 const { PASSWORD_MIN_LENGTH, PASSWORD_SALT_ROUNDS } = require("../common/constants");
 
