@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import blogService from "./services/blogs";
+import BlogForm from "./components/BlogForm";
 import LoginForm from "./components/LoginForm";
 import Title from "./components/Title";
 import BlogList from "./components/BlogList";
@@ -32,9 +33,14 @@ const App = () => {
 
     return (
         <div>
-            <Title text="Blogs" headingLevel="h2" />
+            <Title text="Blogs" headingLevel="h1" />
+
             <span>{user.name} logged in</span>
             <LogoutButton setUserFunction={setUser} />
+
+            <Title text="Create new" headingLevel="h2" />
+            <BlogForm />
+
             <BlogList blogs={blogs} />
         </div>
     );
