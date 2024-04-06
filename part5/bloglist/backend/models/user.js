@@ -1,3 +1,4 @@
+const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
 const uniqueValidator = require("mongoose-unique-validator");
 
@@ -19,6 +20,10 @@ const userSchema = new mongoose.Schema({
             ref: "Blog",
         },
     ],
+});
+
+userSchema.method("isValidPassword", async function (password) {
+    return await bcrypt.compare(password, this.passwordHash);
 });
 
 const userTransform = (_, returnedObject) => {
