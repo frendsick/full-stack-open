@@ -6,9 +6,14 @@ loginRouter.post("/", async (request, response) => {
     const { username, password } = request.body;
 
     const user = await User.findOne({ username });
-    const validPassword = user.isValidPassword(password);
+    if (!user) {
+        return response.status(401).json({
+            error: "invalid username or password",
+        });
+    }
 
-    if (!(user && validPassword)) {
+    const validPassword = await user.isValidPassword(password);
+    if (!validPassword) {
         return response.status(401).json({
             error: "invalid username or password",
         });
@@ -20,8 +25,12 @@ loginRouter.post("/", async (request, response) => {
     };
 
     const hourInSeconds = 60 * 60;
-    const token = jwt.sign(userForToken, process.env.JWT_SECRET, { expiresIn: hourInSeconds });
-    response.status(200).send({ id: user._id, token, username: user.username, name: user.name });
+    const token = jwt.sign(userForToken, process.env.JWT_SECRET, {
+        expiresIn: hourInSeconds,
+    });
+    response
+        .status(200)
+        .send({ id: user._id, token, username: user.username, name: user.name });
 });
 
 module.exports = loginRouter;
