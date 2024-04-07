@@ -37,7 +37,8 @@ const App = () => {
         return (
             <div>
                 <Title text="Log in to application" headingLevel="h2" />
-                <LoginForm setUserFunction={setUser} />
+                <Notification message={notification} type={notificationType} />
+                <LoginForm setUserFunction={setUser} showNotification={showNotification} />
             </div>
         );
     }
