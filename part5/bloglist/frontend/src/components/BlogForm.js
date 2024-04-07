@@ -2,7 +2,7 @@ import { useState } from "react";
 import blogService from "../services/blogs";
 import { LOGGED_USER_STORAGE } from "../common/constants";
 
-const BlogForm = () => {
+const BlogForm = ({ showNotification }) => {
     // Input fieldnvim-tree states
     const [title, setTitle] = useState("");
     const [author, setAuthor] = useState("");
@@ -19,9 +19,14 @@ const BlogForm = () => {
             url: url,
             user: currentUser.id,
         };
-        const createdBlog = blogService.create(blog);
 
-        if (!createdBlog) return window.alert("Could not create blog");
+        // Create the blog
+        try {
+            await blogService.create(blog);
+            showNotification(`A new blog ${title} by ${author} added`);
+        } catch (error) {
+            showNotification("Could not create blog", "error");
+        }
     };
 
     return (

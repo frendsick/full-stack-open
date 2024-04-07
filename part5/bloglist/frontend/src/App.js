@@ -25,6 +25,14 @@ const App = () => {
         if (user) blogService.getAll().then((blogs) => setBlogs(blogs));
     }, [user]);
 
+    function showNotification(message, type = "success", delayMs = 3000) {
+        setNotificationType(type);
+        setNotification(message);
+        setTimeout(() => {
+            setNotification(null);
+        }, delayMs);
+    }
+
     if (user === null) {
         return (
             <div>
@@ -44,7 +52,7 @@ const App = () => {
             <LogoutButton setUserFunction={setUser} />
 
             <Title text="Create new" headingLevel="h2" />
-            <BlogForm />
+            <BlogForm showNotification={showNotification} />
 
             <BlogList blogs={blogs} />
         </div>
